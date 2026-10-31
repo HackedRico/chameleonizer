@@ -62,14 +62,14 @@ After an engine change, rebuild the renders so that the panel shows the engine y
 docker run --rm --platform linux/amd64 --network none --entrypoint python \
 	-v "$PWD/engine":/app/engine -v "$PWD/tools":/app/tools \
 	-v "$PWD/input":/app/input:ro -v "$PWD/addon":/app/addon \
-	my-chameleon-engine -m addon.build_renders --engine-label engine-v1.28
+	my-chameleon-engine -m addon.build_renders --engine-label engine-v1.29
 ```
 
 `build_renders.py` resizes each sample to every format in its `FORMATS` list with `engine.resize.resize`. It stops if an output breaks a hard rule that `tools.checks.structural` checks. Otherwise it writes the PNGs and `renders/index.json`, and it deletes any PNG that the new catalogue no longer lists.
 
-The Level 3 sample references `solstice_holiday_badge_2025.png`, which the brand kit leaves out on purpose. The source render shows the grey placeholder that the official renderer draws for a missing asset. The engine's outputs shrink that image, set it to opacity 0 and place it behind the background, so no output render shows the box.
+The Level 3 sample references `solstice_holiday_badge_2025.png`, which the brand kit leaves out on purpose. The source render shows the grey placeholder that the official renderer draws for a missing asset. The engine keeps that image visible, so the output renders show the same box, parked in free space at about its source share of the canvas.
 
-Known issue: in the Level 3 render at 300x250, the space in the button's "Summer Line" is narrow. v1.27 drew "SUNSETS ALE" and "Shop the SummerLine" there, and v1.28 draws both spaces in place.
+Known issue: the Level 3 render at 300x250, a size outside the benchmark, got worse in v1.29. The engine parks the grey box between the button and the fine print. In the same layout the headline drops from 12 px to 10 px and the ribbon label from 8 px to 5 px, too small to read "SUNSET SALE".
 
 ## What has been checked
 

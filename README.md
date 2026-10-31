@@ -1,8 +1,8 @@
 # Team Chameleonizer: Project Chameleon, Adobe University Hackathon 2026
 
-Our entry implements `resize(source, target_canvas)` in `engine/resize.py`. Given a finished design as schema JSON and a new canvas size, it returns the same elements moved, resized and refit for that canvas. The copy, font families and asset pixels stay exactly as given, and the engine never stretches an image or generates anything new. The submitted version is engine v1.28.
+Our entry implements `resize(source, target_canvas)` in `engine/resize.py`. Given a finished design as schema JSON and a new canvas size, it returns the same elements moved, resized and refit for that canvas. The copy, font families and asset pixels stay exactly as given, and the engine never stretches an image or generates anything new. The submitted version is engine v1.29.
 
-![The official Level 2 sample, 1080x1080, re-laid-out by v1.28 as an 1800x2400 poster, a 336x280 ad, a 1600x400 banner, Full HD and a 970x90 strip](/docs/assets/resize-examples.jpg)
+![The official Level 2 sample, 1080x1080, re-laid-out by v1.29 as an 1800x2400 poster, a 336x280 ad, a 1600x400 banner, Full HD and a 970x90 strip](/docs/assets/resize-examples.jpg)
 
 The official Level 2 sample on five canvases, drawn by the official renderer inside the scoring Docker image.
 
@@ -18,7 +18,7 @@ docker run --rm --network none \
   my-chameleon-engine
 ```
 
-Each task in `input/` produces `<task>_output.json` and `<task>_output.png` in `output/`. The engine makes no network calls and loads no model. `requirements.txt` pins every package to the version installed in the image our benchmark ran in.
+Each task in `input/` produces `<task>_output.json` and `<task>_output.png` in `output/`. The engine runs on the CPU alone. It needs no GPU, makes no network calls and loads no model at run time. Its code imports the official renderer `cr-renderer`, pinned to a fixed commit, along with `skia-python`, Pillow and NumPy, and the other packages in `requirements.txt` come in with the renderer. That file pins every package to the version installed in the image our benchmark ran in. After 20 s on one task, the engine stops trying new candidates and returns the best one it has scored, so one hard design cannot hold up the tasks behind it. The slowest of our 169 benchmark tasks took 9.1 s in the scoring container, and the official Level 3 sample once took 12.1 s there on a busy host.
 
 To run without Docker, you need Python 3.11 or newer, plus `git`, because pip installs the renderer from its Git repository:
 
@@ -37,7 +37,7 @@ The engine starts by working out what each element is. It gives each element a r
 
 Next it sorts the target canvas into one of five shapes: tall, square, landscape, banner or strip. For that shape it proposes candidate layouts, such as a vertical stack, the product beside a column of text, or everything in one row. It then sizes and wraps each candidate's text with the official renderer's own fonts and metrics, so the text the engine measures is the text the renderer draws. Type stays at 10 px or 1.1% of the canvas's short side, whichever is larger, and the engine goes below that floor only when a crowded layout leaves no other room.
 
-Instead of rendering the candidates, the engine scores them. Coded checks in `engine/core/critic.py` read geometry, measured text and probes of the asset pixels. Together they score every candidate for collisions, overflow, readability, brand, hierarchy, use of space, clutter and faithfulness to the source. The engine then rebuilds the best candidate with matched margins and shrinks any text that would run past the canvas. If copy still collides after that, it switches to a packed layout that gives every unit its own slot. In our benchmark that happened on 10 of 169 tasks, all of them small ads.
+Instead of rendering the candidates, the engine scores them. Coded checks in `engine/core/critic.py` read geometry, measured text and probes of the asset pixels. Together they score every candidate for collisions, overflow, readability, brand, hierarchy, use of space, clutter and faithfulness to the source. The engine then rebuilds the best candidate with matched margins and shrinks any text that would run past the canvas. If copy still collides after that, it switches to a packed layout that gives every unit its own slot. In our benchmark that happened on 11 of 169 tasks, ten of them at 320x100 or smaller and the official Level 3 sample at 728x90.
 
 As it finishes the layout, the engine enforces the hard rules on every element. Each id appears once, and every element and every wrapped line stays inside the canvas. Non-background images keep their source aspect within 2%, and every font size is an integer.
 
@@ -47,7 +47,7 @@ When something goes wrong, `resize()` still returns a valid design. If the engin
 
 In the submitted engine, coordinates, sizes and the final choice of layout come from code. Small models are unreliable both at placing elements and at judging quality, as section 5 of `docs/research.md` sets out. The organizers have also not published their approved model list, so the engine has to work with no model at all.
 
-Scoring from geometry and measured text needs no render, so the engine can score every candidate it builds. The slowest of our 169 benchmark tasks finishes in 6.3 s in the scoring container.
+Scoring from geometry and measured text needs no render, so the engine can score every candidate it builds.
 
 Hidden test designs may use opaque ids, so the engine reads roles from geometry. A rule keyed on an id like `headline` would break on those designs. `tests/test_robustness.py` checks that random ids produce the same layout as the original ids. Every failure path also ends in a layout that passes the hard rules, because a crash scores nothing.
 
@@ -57,7 +57,7 @@ We built the core so it can run inside an Adobe Express add-on after stage one. 
 
 ## Hard rules
 
-The engine changes only position, size and font size, except on an image whose asset file is missing from `brand_kit/assets/`. In its place the renderer would draw a grey placeholder box that reads as broken, so the engine shrinks that image, sets its opacity to 0 and gives it a `z_index` behind the background. The engine hides nothing else. An opt-in setting, `CHAMELEON_DROP_POLICY=occlude`, can hide low-priority units on strip canvases, but it is off by default and the Dockerfile does not set it.
+The engine changes only position, size and, on text, font size. It hides nothing, because the recap of the organizers' October 22 session asks that every input element stay visible. That includes an image whose asset file is missing from `brand_kit/assets/`, which the renderer draws as a grey placeholder box. The engine never makes that image the logo or the hero. It places the box after the copy, in free space where it can, at about the image's share of the source canvas and at least 8 px on its shorter side. An opt-in setting, `CHAMELEON_DROP_POLICY=occlude`, hides a missing asset on any canvas and low-priority units on strips. It is off by default, and the Dockerfile does not set it.
 
 Copy, font family and asset pixels never change. Every image keeps its source aspect within 2%, inside the starter code's 5% tolerance. The one exception is a `cover` backdrop that fills at least 85% of the canvas. The engine sizes its box to the full canvas and the renderer crops the image to fit, the way the starter code treats a full-bleed backdrop, so no pixel stretches.
 
@@ -65,19 +65,20 @@ Copy, font family and asset pixels never change. Every image keeps its source as
 
 We tuned the engine against a frozen benchmark of 169 tasks in four splits. The `dev` split has the 3 official samples and 36 generated designs, and `test` has 18 held-out tasks. The `probe` split runs 12 hand-made designs at 5 formats each, and `formats` runs 4 designs at 13 sizes. The organizers have not published the scorer's rubric, so we had Claude judge the renders on the qualities in section 2.5 of the brief. The engine never calls the judge. Every number below comes from renders we made inside the scoring Docker image.
 
-| Check on v1.28 | Result |
+| Check | Result |
 |---|---|
-| Structural checks | 169 of 169 tasks pass, with each id once: `dev` 39, `test` 18, `probe` 60, `formats` 52 |
-| Rules audit | No element and no wrapped line past the canvas, integer font sizes, copy and fonts unchanged, worst image aspect drift 0.024% |
-| Pairwise against v1.27, both image orders | 20 wins, 6 losses and 18 ties on the 44 tasks whose output changed |
-| Judge score out of 10 | `dev` 6.85, `test` 7.11, `formats` 6.00, against 6.85, 7.11 and 5.96 for v1.27. `probe` was not rescored |
+| Structural checks on v1.29 | 169 of 169 tasks pass, with each id once: `dev` 39, `test` 18, `probe` 60, `formats` 52 |
+| Rules audit on v1.29 | No element and no wrapped line past the canvas, no element hidden, `opacity` and `z_index` unchanged, integer font sizes, copy and fonts unchanged, worst image aspect drift 0.027% |
+| v1.29 against v1.28 | The 19 tasks with a missing asset changed, and the other 150 outputs are byte-identical |
+| v1.28 against v1.27, pairwise in both image orders | 20 wins, 6 losses and 18 ties on the 44 tasks whose output changed |
+| Judge score out of 10 on v1.28 | `dev` 6.85, `test` 7.11, `formats` 6.00, against 6.85, 7.11 and 5.96 for v1.27. `probe` was not rescored, and neither were the 19 tasks v1.29 changed |
 | Cold `--no-cache` build of this package | passes all 3 official samples |
 
 ### Known limits
 
-The smallest ads are the weak spot. Of the 709 text elements in the benchmark, 40 are drawn below 5 px, all on the five small ad sizes: 120x90, 234x60, 300x50, 320x50 and 320x100. The 10 drawn at 1 to 2 px all belong to the dense official Level 3 sample at 120x90 and 234x60. In the `formats` split, 11 of 52 tasks score 4 or below, all of them at the five small ad sizes.
+The smallest ads are the weak spot. Of the 709 text elements in the benchmark, 40 are drawn below 5 px, all on the five small ad sizes: 120x90, 234x60, 300x50, 320x50 and 320x100. The 10 drawn at 1 to 2 px all belong to the dense official Level 3 sample at 120x90 and 234x60. The judge scored 11 of the 52 `formats` tasks at 4 or below on v1.28, all of them at the five small ad sizes.
 
-The engine also treats any non-background image whose file is not in `brand_kit/assets/` as missing, so a design that names other assets loses those images.
+The engine reads asset pixels only from `brand_kit/assets/`, the folder the official renderer draws from. An image whose file is not there draws as the renderer's grey box, and the engine never makes it the logo or the hero, so a design whose product photo is missing has no hero. The box also takes room. On the official Level 3 sample at 300x250, a size outside the benchmark, v1.29 draws the ribbon label at 5 px, where v1.28 drew it at 8 px.
 
 ## Optional model harness
 

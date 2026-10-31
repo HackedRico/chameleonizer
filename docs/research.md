@@ -287,3 +287,5 @@ There is no official list. Licenses and parameter counts below were checked on H
 8. How should an element with a missing asset be handled?
 9. Are there model or network rules for the finale?
 10. How do we submit: repo link, zip or Docker image? Must the submitted repo be public?
+
+The recap of the organizers' October 22 information session answers questions 1 and 8 for the baseline output: "Every input element should remain visible." The engine keeps a missing asset visible as the renderer's grey placeholder and hides nothing by default.
