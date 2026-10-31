@@ -15,7 +15,7 @@ The add-on has no build step and no dependencies. Express loads `manifest.json`,
 Express loads a local add-on from the dev server in Adobe's add-on CLI. That server publishes an add-on listing at its root and serves the files under the manifest's `testId`. A plain static server does neither. These steps follow the CLI track of Adobe's Hello World guide, plus one copy step. You need Node.js 18 or later.
 
 1. Turn on add-on development in Express, once per account. Click your avatar, click the gear icon to open **Settings**, and turn on **Add-on Development**. Accept the Developer Terms of Use if Express asks.
-2. Create an add-on project from Adobe's no-build `javascript` template, then create a trusted SSL certificate for `localhost`. At the certificate prompt, choose **Automatically, set it up for me** and enter your Mac password when asked.
+2. Create an add-on project from Adobe's no-build `javascript` template, then create a trusted SSL certificate for `localhost`. At the certificate prompt, choose **Automatically, set it up for me**. The CLI serves the add-on over HTTPS on every system, so it needs this certificate on Windows and Linux too, and may ask for your system password to trust it.
 
 	```bash
 	npx @adobe/create-ccweb-add-on chameleonizer-viewer --template javascript
