@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="224" viewBox="0 0 960 224" role="img" aria-label="Ports and adapters: one engine core, a stage-one adapter and a planned Express adapter">
+<defs>
+<marker id="arrow-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#57606a"/></marker>
+<marker id="arrow-fallback" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c77700"/></marker>
+</defs>
+<rect x="1" y="1" width="958" height="222" rx="16" fill="#ffffff" stroke="#d0d7de"/>
+<g font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" fill="#1f2328">
+<rect x="24" y="28" width="262" height="168" rx="10" fill="#eef1f4" stroke="#8c959f" stroke-width="1.5"/>
+<text x="155.0" y="87.0" text-anchor="middle" font-size="17" font-weight="600">Stage one, this entry</text>
+<text x="155.0" y="109.0" text-anchor="middle" font-size="15" fill="#57606a">engine/adapters/stage_one.py</text>
+<text x="155.0" y="129.0" text-anchor="middle" font-size="15" fill="#57606a">official renderer fonts</text>
+<text x="155.0" y="149.0" text-anchor="middle" font-size="15" fill="#57606a">and wrap, brand_kit/ pixels</text>
+<rect x="326" y="28" width="308" height="168" rx="10" fill="#ddeafe" stroke="#2f6fdb" stroke-width="1.5"/>
+<text x="480.0" y="77.0" text-anchor="middle" font-size="17" font-weight="600">Engine core, engine/core/</text>
+<text x="480.0" y="99.0" text-anchor="middle" font-size="15" fill="#57606a">schema dicts in and out</text>
+<text x="480.0" y="119.0" text-anchor="middle" font-size="15" fill="#57606a">no file access</text>
+<text x="480.0" y="139.0" text-anchor="middle" font-size="15" fill="#57606a">no renderer imports</text>
+<text x="480.0" y="159.0" text-anchor="middle" font-size="15" fill="#57606a">ports: TextMeasurer, AssetProbe</text>
+<rect x="674" y="28" width="262" height="168" rx="10" fill="#ffffff" stroke="#8c959f" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="805.0" y="87.0" text-anchor="middle" font-size="17" font-weight="600">Express add-on, planned</text>
+<text x="805.0" y="109.0" text-anchor="middle" font-size="15" fill="#57606a">Express measures the text</text>
+<text x="805.0" y="129.0" text-anchor="middle" font-size="15" fill="#57606a">and supplies the assets,</text>
+<text x="805.0" y="149.0" text-anchor="middle" font-size="15" fill="#57606a">same engine core</text>
+<path d="M288,112.0 L324,112.0" fill="none" stroke="#57606a" stroke-width="2" marker-end="url(#arrow-ink)"/>
+<path d="M672,112.0 L636,112.0" fill="none" stroke="#57606a" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow-ink)"/>
+</g>
+</svg>

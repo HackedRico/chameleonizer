@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="532" viewBox="0 0 960 532" role="img" aria-label="The resize pipeline: understand, propose, size, score, pick and repair, validate">
+<defs>
+<marker id="arrow-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#57606a"/></marker>
+<marker id="arrow-fallback" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c77700"/></marker>
+</defs>
+<rect x="1" y="1" width="958" height="530" rx="16" fill="#ffffff" stroke="#d0d7de"/>
+<g font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" fill="#1f2328">
+<rect x="24.0" y="28" width="198.0" height="112" rx="10" fill="#eef1f4" stroke="#8c959f" stroke-width="1.5"/>
+<text x="123.0" y="69.0" text-anchor="middle" font-size="17" font-weight="600">Input</text>
+<text x="123.0" y="91.0" text-anchor="middle" font-size="15" fill="#57606a">source design JSON</text>
+<text x="123.0" y="111.0" text-anchor="middle" font-size="15" fill="#57606a">target canvas size</text>
+<rect x="262.0" y="28" width="198.0" height="112" rx="10" fill="#ddeafe" stroke="#2f6fdb" stroke-width="1.5"/>
+<text x="361.0" y="59.0" text-anchor="middle" font-size="17" font-weight="600">1  Understand</text>
+<text x="361.0" y="81.0" text-anchor="middle" font-size="15" fill="#57606a">roles from geometry,</text>
+<text x="361.0" y="101.0" text-anchor="middle" font-size="15" fill="#57606a">type and style,</text>
+<text x="361.0" y="121.0" text-anchor="middle" font-size="15" fill="#57606a">never from ids</text>
+<rect x="500.0" y="28" width="198.0" height="112" rx="10" fill="#ddeafe" stroke="#2f6fdb" stroke-width="1.5"/>
+<text x="599.0" y="69.0" text-anchor="middle" font-size="17" font-weight="600">2  Propose</text>
+<text x="599.0" y="91.0" text-anchor="middle" font-size="15" fill="#57606a">candidate layouts</text>
+<text x="599.0" y="111.0" text-anchor="middle" font-size="15" fill="#57606a">for the canvas shape</text>
+<rect x="738.0" y="28" width="198.0" height="112" rx="10" fill="#ddeafe" stroke="#2f6fdb" stroke-width="1.5"/>
+<text x="837.0" y="69.0" text-anchor="middle" font-size="17" font-weight="600">3  Size and place</text>
+<text x="837.0" y="91.0" text-anchor="middle" font-size="15" fill="#57606a">text measured with</text>
+<text x="837.0" y="111.0" text-anchor="middle" font-size="15" fill="#57606a">the renderer's fonts</text>
+<rect x="24.0" y="212" width="198.0" height="112" rx="10" fill="#ddeafe" stroke="#2f6fdb" stroke-width="1.5"/>
+<text x="123.0" y="243.0" text-anchor="middle" font-size="17" font-weight="600">4  Score</text>
+<text x="123.0" y="265.0" text-anchor="middle" font-size="15" fill="#57606a">coded critic, a check</text>
+<text x="123.0" y="285.0" text-anchor="middle" font-size="15" fill="#57606a">per rubric row,</text>
+<text x="123.0" y="305.0" text-anchor="middle" font-size="15" fill="#57606a">nothing rendered</text>
+<rect x="262.0" y="212" width="198.0" height="112" rx="10" fill="#ddeafe" stroke="#2f6fdb" stroke-width="1.5"/>
+<text x="361.0" y="243.0" text-anchor="middle" font-size="17" font-weight="600">5  Pick and repair</text>
+<text x="361.0" y="265.0" text-anchor="middle" font-size="15" fill="#57606a">best candidate,</text>
+<text x="361.0" y="285.0" text-anchor="middle" font-size="15" fill="#57606a">margins matched,</text>
+<text x="361.0" y="305.0" text-anchor="middle" font-size="15" fill="#57606a">text kept on canvas</text>
+<rect x="500.0" y="212" width="198.0" height="112" rx="10" fill="#ddeafe" stroke="#2f6fdb" stroke-width="1.5"/>
+<text x="599.0" y="243.0" text-anchor="middle" font-size="17" font-weight="600">6  Validate</text>
+<text x="599.0" y="265.0" text-anchor="middle" font-size="15" fill="#57606a">every id once, inside</text>
+<text x="599.0" y="285.0" text-anchor="middle" font-size="15" fill="#57606a">the canvas, aspect</text>
+<text x="599.0" y="305.0" text-anchor="middle" font-size="15" fill="#57606a">kept, integer sizes</text>
+<rect x="738.0" y="212" width="198.0" height="112" rx="10" fill="#eef1f4" stroke="#8c959f" stroke-width="1.5"/>
+<text x="837.0" y="253.0" text-anchor="middle" font-size="17" font-weight="600">Output</text>
+<text x="837.0" y="275.0" text-anchor="middle" font-size="15" fill="#57606a">the same elements,</text>
+<text x="837.0" y="295.0" text-anchor="middle" font-size="15" fill="#57606a">re-laid-out</text>
+<rect x="24" y="404" width="300" height="104" rx="10" fill="#ffffff" stroke="#8c959f" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="174.0" y="431.0" text-anchor="middle" font-size="17" font-weight="600">Optional model, ships off</text>
+<text x="174.0" y="453.0" text-anchor="middle" font-size="15" fill="#57606a">may choose between finished</text>
+<text x="174.0" y="473.0" text-anchor="middle" font-size="15" fill="#57606a">layouts, fixed answers only,</text>
+<text x="174.0" y="493.0" text-anchor="middle" font-size="15" fill="#57606a">timeout and coded default</text>
+<rect x="364" y="404" width="176" height="104" rx="10" fill="#fff1dc" stroke="#c77700" stroke-width="1.5"/>
+<text x="452.0" y="441.0" text-anchor="middle" font-size="17" font-weight="600">Packed layout</text>
+<text x="452.0" y="463.0" text-anchor="middle" font-size="15" fill="#57606a">if copy still</text>
+<text x="452.0" y="483.0" text-anchor="middle" font-size="15" fill="#57606a">collides</text>
+<rect x="560" y="404" width="176" height="104" rx="10" fill="#fff1dc" stroke="#c77700" stroke-width="1.5"/>
+<text x="648.0" y="441.0" text-anchor="middle" font-size="17" font-weight="600">Letterbox</text>
+<text x="648.0" y="463.0" text-anchor="middle" font-size="15" fill="#57606a">if the engine</text>
+<text x="648.0" y="483.0" text-anchor="middle" font-size="15" fill="#57606a">raises</text>
+<rect x="756" y="404" width="176" height="104" rx="10" fill="#fff1dc" stroke="#c77700" stroke-width="1.5"/>
+<text x="844.0" y="441.0" text-anchor="middle" font-size="17" font-weight="600">Emergency layout</text>
+<text x="844.0" y="463.0" text-anchor="middle" font-size="15" fill="#57606a">if the letterbox</text>
+<text x="844.0" y="483.0" text-anchor="middle" font-size="15" fill="#57606a">fails</text>
+<path d="M224.0,84.0 L260.0,84.0" fill="none" stroke="#57606a" stroke-width="2" marker-end="url(#arrow-ink)"/>
+<path d="M462.0,84.0 L498.0,84.0" fill="none" stroke="#57606a" stroke-width="2" marker-end="url(#arrow-ink)"/>
+<path d="M700.0,84.0 L736.0,84.0" fill="none" stroke="#57606a" stroke-width="2" marker-end="url(#arrow-ink)"/>
+<path d="M224.0,268.0 L260.0,268.0" fill="none" stroke="#57606a" stroke-width="2" marker-end="url(#arrow-ink)"/>
+<path d="M462.0,268.0 L498.0,268.0" fill="none" stroke="#57606a" stroke-width="2" marker-end="url(#arrow-ink)"/>
+<path d="M700.0,268.0 L736.0,268.0" fill="none" stroke="#57606a" stroke-width="2" marker-end="url(#arrow-ink)"/>
+<path d="M837.0,142 L837.0,176.0 L123.0,176.0 L123.0,210" fill="none" stroke="#57606a" stroke-width="2" marker-end="url(#arrow-ink)"/>
+<path d="M302.0,402 L302.0,326" fill="none" stroke="#57606a" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow-ink)"/>
+<path d="M452.0,326 L452.0,402" fill="none" stroke="#c77700" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow-fallback)"/>
+<text x="560" y="392" font-size="15" fill="#57606a">Every fallback keeps all ids on the canvas</text>
+</g>
+</svg>
