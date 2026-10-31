@@ -26,7 +26,7 @@ The generated designs mimic the official samples: the Solstice brand kit, varied
   - a big-number promo, an event story with date, time and place lines, a card panel holding the copy, and two buttons;
   - a wide banner source and a logo-only brand card.
 
-  It measures how well the engine holds up on unseen designs, a rubric row the generated splits barely test. Fix what it reveals with general rules, never per design. v1.15 scored 5.6 overall in session there, against 6.7 on `dev`.
+  It measures how well the engine holds up on unseen designs, a rubric row the generated splits barely test. Fix what it reveals with general rules, never per design. v1.15 scored 5.6 overall there with the in-session judge, against 6.7 on `dev`.
 
 - **`formats`:** 52 tasks, the three official samples and one generated story, each resized to 13 formats. All but the 320x50 mobile banner are missing from the catalogue.
   - Print sheets: A4 both ways, US Letter and an 18x24 poster. The brief lists "a printed poster" among the target shapes, and print sizes run to thousands of pixels.

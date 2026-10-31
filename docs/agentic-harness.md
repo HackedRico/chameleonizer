@@ -48,7 +48,7 @@ Code map:
 **Firing rate.** The harness asks a model only when at least one challenger is eligible.
 - With the defaults (`top_k` 2, epsilon 3) and the `null` advisor, it fired on 63 of the 172 tasks in `input/` and the four suites, 16 of them on `dev`. On 81 tasks the runner-up finished into the same design as the pick or there was none (`single`), and on 28 it was not eligible.
 - Measured on raw candidate scores before finishing and dedupe, epsilon 3 fires on 23 of 39 dev, 27 of 60 probe and 24 of 52 formats tasks, and epsilon 1 on 17, 19 and 20.
-- Each firing task costs one extra finished alternative (a `propose(only=...)` and a critique, usually under 0.1 s, up to about 1.2 s when the packed layout is built), three renders, and one or two model calls. On a quiet cloud machine the renders took 0.7 to 1.2 s per firing task. On a loaded one (load average about 10 on 4 CPUs) a firing task took 3.9 s on average and 9.2 s at most on top of the engine with the `null` advisor, and 3 tasks ran out of the 10 s budget before asking.
+- Each firing task costs one extra finished alternative (a `propose(only=...)` and a critique, usually under 0.1 s, up to about 1.2 s when the packed layout is built), three renders, and one or two model calls. On a quiet machine the renders took 0.7 to 1.2 s per firing task. On a loaded one (load average about 10 on 4 CPUs) a firing task took 3.9 s on average and 9.2 s at most on top of the engine with the `null` advisor, and 3 tasks ran out of the 10 s budget before asking.
 - Epsilon and `top_k` are the latency knobs; renders, not the alternatives, dominate the cost before any model call.
 
 ## 3. Vocabularies
@@ -211,7 +211,7 @@ Presets:
 
 ## 6. Deploying on a MacBook
 
-Run everything natively from the repo `.venv`, not in Docker: a container started with `--network none` cannot reach a model server on the host. Download weights on the Mac; huggingface.co is blocked in the cloud sessions.
+Run everything natively from the repo `.venv`, not in Docker: a container started with `--network none` cannot reach a model server on the host.
 
 ### llama.cpp (recommended: the same GGUF that would ship)
 
@@ -286,15 +286,15 @@ A model earns a place in two stages. Neither has been run with a real model yet,
      --out output/blind/nt1 --epsilon 3 --top-k 4
    ```
    Renders are the raw bytes the engine would show a model, at `--image-max`, so verdicts on them replay through the engine, on this machine and renderer build with the same `--image-max`, drop policy, epsilon and `--top-k`. `--out` must be missing, empty or an earlier near-ties round: the command refuses to clear any other folder, and a round with verdicts only with `--force`.
-2. Judge them in session with `tools/workflows/blind_pairwise_judge.js`, twice, saving `verdicts_rep0.json` and `verdicts_rep1.json` in the round folder (see `docs/benchmark.md`).
+2. Judge them with in-session Claude agents through `tools/workflows/blind_pairwise_judge.js`, twice, saving `verdicts_rep0.json` and `verdicts_rep1.json` in the round folder (see `docs/benchmark.md`).
 3. Build the dataset, on the machine that holds the judged rounds:
    ```bash
    .venv/bin/python -m tools.agree build --out bench/agree/v1 --round output/blind/nt1 \
      --round output/blind/pack --round output/blind/chipeq --tier pack=D2 \
      --absolute output/blind/abs_rc_dev=output/bench/rc_dev --controls 20
    ```
-   - **Inputs live where they were made.** `output/` is gitignored, so judged rounds and bench runs exist only in the session or clone that produced them. Only `--round` folders with verdicts are required, and at least one is. `--round output/blind/pack`, `--round output/blind/chipeq` and `--absolute output/blind/abs_rc_dev=output/bench/rc_dev` were judged in the cloud session of 2026-10-29 and 30 and are optional: leave out any that do not exist. `build` names every missing input and stops.
-   - **Moving it to the Mac.** Build where the rounds are, then commit `bench/agree/v1/` in a pull request (binary files included, so with `git add`, not a text patch) and pull it on the Mac. If it is over 50 MB, `tar czf output/agree-v1.tgz bench/agree/v1` and copy the archive instead. Judging near-ties on the Mac in a Claude Code session works the same way: lay out, judge and build there.
+   - **Inputs live where they were made.** `output/` is gitignored, so judged rounds and bench runs exist only in the clone that produced them. Only `--round` folders with verdicts are required, and at least one is. `--round output/blind/pack`, `--round output/blind/chipeq` and `--absolute output/blind/abs_rc_dev=output/bench/rc_dev` are rounds judged on 2026-10-29 and 30 and are optional. Leave out any that do not exist. `build` names every missing input and stops.
+   - **Moving the dataset to the model machine.** Build where the rounds are, then commit `bench/agree/v1/` with `git add`, binary files included, and pull it on the machine that runs the model. If it is over 50 MB, `tar czf output/agree-v1.tgz bench/agree/v1` and copy the archive instead. The model machine can also lay out, judge and build near-ties itself.
    - A pair is decisive only if every rep agrees on a non-tie in both orders (D1 or D2 from `--tier`, D3 for near-ties). All ties is C1; anything mixed is C3 and only counted. C2 controls are identical pairs.
    - a and b are assigned by hash parity, and the `tune` or `hold` split by the parity of the original image's hash. Renders of one source at different sizes hash differently, so the same source can land in both halves across round types.
    - Commit it as `bench/agree/v1/` if it is 50 MB or less, otherwise keep it as a tarball under `output/`.
@@ -329,13 +329,13 @@ Passing every gate means "go to the end-to-end benchmark", not "ship". Final lat
 
 `tools/docker/agent-bench.Dockerfile` is a development-only amd64 image: llama-server built with `GGML_NATIVE=OFF`, the engine, `tools/`, `bench/` and your `models/` folder. The build checks that llama-server finds its shared libraries.
 
-1. Put the weights in `models/` at the repo root (gitignored, and kept out of the scoring image). `llama-server -hf` downloads into its own cache, not here, so download the files explicitly, with the Hugging Face CLI on the Mac:
+1. Put the weights in `models/` at the repo root (gitignored, and kept out of the scoring image). `llama-server -hf` downloads into its own cache, not here, so download the files explicitly, with the Hugging Face CLI:
    ```bash
    hf download unsloth/Qwen3.5-0.8B-GGUF --include "*Q4_K_M.gguf" "mmproj-F16.gguf" --local-dir models
    ls models    # the exact file names to pass as MODEL and MMPROJ
    ```
    The build fails if `models/` is missing.
-2. Build and run on the Mac, with the names `ls models` printed:
+2. Build and run on an Apple silicon Mac, the scorer's hardware, with the names `ls models` printed:
    ```bash
    docker build --platform linux/amd64 -f tools/docker/agent-bench.Dockerfile -t chameleonizer-agent .
    docker run --rm --platform linux/amd64 --cpus 4 --memory 8g --network none \
@@ -381,14 +381,14 @@ Judge changed tasks only, with `tools.blind make`, `tools/workflows/blind_pairwi
 - `test` is not worse;
 - `pytest` passes and structural checks pass everywhere.
 
-**Runtime gates**, in the amd64 container with 4 CPUs: total per design p95 10 s or less and max 20 s or less, cold load 10 s or less, model RSS 2 GB or less. Cloud figures must sit at 50% of each budget or less.
+**Runtime gates**, in the amd64 container with 4 CPUs: total per design p95 10 s or less and max 20 s or less, cold load 10 s or less, model RSS 2 GB or less. Figures measured on any other machine must sit at 50% of each budget or less.
 
 Log results in `docs/experiments.md` and `docs/leaderboard.md`, and tag engines as usual.
 
-## 8. What cloud sessions can do without weights
+## 8. What runs without model weights
 
 - E1 and E1b with `tools/digests.py`, E2 with `random`, and every component test (`pytest -q tests`).
-- Building datasets from judged rounds, laying out near-ties and judging them in session.
+- Building datasets from judged rounds, laying out near-ties and judging them with in-session agents.
 - Stub runs: `python -m tools.agent_stub_server --mode sleep:30 --port 8099` (modes `answer:<text>`, `script:<file>`, `sleep:<s>[:<text>]`, `status:<code>`, `garbage`, `badjson`, `logprobs:<label>`).
 - E3 replays, once near-ties have frontier verdicts.
 

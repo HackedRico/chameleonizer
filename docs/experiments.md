@@ -6,7 +6,6 @@ Use this shape for each entry:
 
 ```
 ### YYYY-MM-DD: short name
-- Who and branch:
 - Hypothesis:
 - Change:
 - Result: scoreboard before and after, plus links to telling renders
@@ -15,12 +14,11 @@ Use this shape for each entry:
 
 How scores were taken below:
 - **From 2026-10-16 on:** entries use the frozen suite and `tools/judge.py`, Claude Opus 5.5 through the API. See `docs/benchmark.md`.
-- **The 2026-10-13 entries:** the bench was the 3 official samples plus 22 generated tasks, seed 1. "Judge" meant Claude scoring renders by eye inside a session, because no API key was available yet.
+- **The 2026-10-13 entries:** the bench was the 3 official samples plus 22 generated tasks, seed 1. "Judge" meant Claude scoring renders by eye, because the API judge was not set up yet.
 - **"Critic"** is the engine's own coded score. It changes with the engine, so never compare it across versions.
-- **The v1.28 candidate entry:** changes were judged blind by in-session Claude agents with `tools/blind.py` and `tools/workflows/`, in both image orders, two independent replicas per change. A verdict that flips with the order is a tie. The other 2026-10-30 entries use the API judge.
+- **The v1.28 candidate entry:** changes were judged blind by Claude agents with `tools/blind.py` and `tools/workflows/`, as `docs/benchmark.md` describes, in both image orders, two independent replicas per change. A verdict that flips with the order is a tie. The other 2026-10-30 entries use the API judge.
 
 ### 2026-10-30: v1.29 release, a missing asset stays visible
-- **Branch:** `fix/missing-asset-visible`, on `docs/readme-prose` at `3600a2d`.
 - **Hypothesis:** the recap of the organizers' October 22 information session says "Every input element should remain visible in the baseline output, consistent with the challenge requirements." v1.28 hid 19 missing-asset images across the benchmark, so the submission has to ship the visible placeholder from the entry below, with docs and add-on previews that match it.
 - **Change:** v1.29 is v1.28 plus that placeholder change. The release also updates the submission README, rebuilds the add-on previews and gives the default drop policy's reason in `engine/resize.py`.
 - **Result:** container runs in `chameleonizer:v1.26` with the release engine mounted, saved as `output/bench/v129-*`.
@@ -28,19 +26,18 @@ How scores were taken below:
   - **Rules:** structural dev 39/39, test 18/18, probe 60/60, formats 52/52. The independent rules check finds 0 problems, no hidden element and no `opacity` or `z_index` change. The worst aspect drift of an image that is not a full-bleed backdrop is 0.027%, on the 18x8 placeholder in `level3__button_120x90`, against 0.024% for v1.28. 956 tests pass and 11 skip. `tools.package_submission --verify` passes with 0 warnings.
   - **Type sizes and fallbacks:** 709 texts, 40 under 5 px and 10 under 3 px, as in v1.28. The packed fallback now wins on 11 tasks instead of 10, and the new one is the official Level 3 sample at 728x90.
   - **Time:** the slowest task, `level3__large_mobile_banner`, took 9.1 s in the `vis-*` run and 5.4 s in the `v129-*` run, against 6.3 s for v1.28. Both runs produced the same outputs, so the gap is run-to-run timing. The README quotes 9.1 s. The official Level 3 sample at 728x90 got slower. It took 1.7 s in `final-dev`, but 3.9 s in `v129-dev`, 8.3 s in `vis-dev`, 12.1 s in the package verify and 5.1 to 6.3 s in three reruns with a host load average near 16. It now wins with the packed row, and the 20 s budget still leaves room.
-  - **Judge:** not run. The key in `.env` returned 401 even on a models list call, so no absolute score or pairwise verdict exists for the 19 changed tasks. The README keeps v1.28's absolute scores and says so.
+  - **Judge:** not run. The API judge was unavailable at release, so no absolute score or pairwise verdict exists for the 19 changed tasks. The README keeps v1.28's absolute scores and says so.
   - **Viewer add-on:** the previews were rebuilt in the scoring image. Only the 6 Level 3 renders changed, and each now shows the grey box. Level 3 at 300x250, a size outside the benchmark, got worse. The box sits between the button and the fine print, and in the same layout the headline drops from 12 px to 10 px and the ribbon label from 8 px to 5 px, which no longer reads as "SUNSET SALE".
-- **Verdict:** keep as v1.29, the submission build, for the rules. Judge the 19 changed tasks pairwise against `final-*` once `.env` has a working key, and look at the Level 3 layout at 300x250.
+- **Verdict:** keep as v1.29, the submission build, for the rules. Judge the 19 changed tasks pairwise against v1.28 once the API judge is available, and look at the Level 3 layout at 300x250.
 
 ### 2026-10-30: a missing asset stays visible as the renderer's placeholder
-- **Branch:** `fix/missing-asset-visible`, on `docs/readme-prose` at `3600a2d`.
 - **Hypothesis:** the October 22 session recap says "Every input element should remain visible in the baseline output", FAQ Q1 allows only position, size and text font size to change, and the Level 3 note offers "skip it, placeholder it". Only the placeholder satisfies all three, so v1.28's hiding of a missing asset, opacity 0 behind the backdrop, has to go whatever it costs in score.
 - **Change:** by default an image whose asset file is missing is laid out and drawn as the grey placeholder, with its source `opacity` and `z_index`. It is always a secondary image, never the logo or the hero. Stacks and splits park it like a sticker once the copy is placed, packed rows set it under the action at the copy's scale, and its shorter side keeps at least 8 px. The critic and collision checks treat its whole box as opaque, since the probe reports no transparent margin for it. `CHAMELEON_DROP_POLICY=occlude` still hides it.
-- **Result:** container bench in `chameleonizer:v1.26`, saved as `output/bench/vis-*`. Structural checks pass on all 169 tasks. Exactly the 19 tasks with a missing asset changed and the other 150 outputs are byte-identical to `final-*`. The independent rules check finds 0 problems and no `opacity` or `z_index` change anywhere, where `final-*` had 19 of each. Placeholders run from 18x8 at 120x90 to 440x195 on A4, about 1% of the canvas. On 15 tasks the layout is unchanged apart from the parked box. On four Level 3 strips the button and ribbon shift to make room under the button, and Level 3 at 728x90 switches from the strip columns to the packed row, because the box parked beside the rotated ribbon pushed the collision penalty past the packed threshold. No box covers copy. The API judge could not run: the key in `.env` returned 401 on every request, so no pairwise verdict was recorded. Contact sheets of base against new are in the session scratchpad.
+- **Result:** container bench in `chameleonizer:v1.26`, saved as `output/bench/vis-*`. Structural checks pass on all 169 tasks. Exactly the 19 tasks with a missing asset changed and the other 150 outputs are byte-identical to `final-*`. The independent rules check finds 0 problems and no `opacity` or `z_index` change anywhere, where `final-*` had 19 of each. Placeholders run from 18x8 at 120x90 to 440x195 on A4, about 1% of the canvas. On 15 tasks the layout is unchanged apart from the parked box. On four Level 3 strips the button and ribbon shift to make room under the button, and Level 3 at 728x90 switches from the strip columns to the packed row, because the box parked beside the rotated ribbon pushed the collision penalty past the packed threshold. No box covers copy. The API judge was unavailable, so no pairwise verdict was recorded.
 - **Verdict:** keep, for the rules. Expect the judge to mark some of these 19 renders down for the grey box.
 
 ### 2026-10-30: v1.28 release review fixes
-- **Branch:** `rc/engine-v1.28`, on the v1.28 tree.
+- **Base:** v1.28.
 - **Hypothesis:** the release review's code-safe findings can be fixed without moving any benchmark output.
 - **Change:** the longest word ends at a hard line break, as the renderer's wrap does. A zero-width `cover` image skips the fit mapping instead of dividing by zero. A rigid label that shrinks near the canvas bottom caps its box at the edge. The emergency layout scales both sides of an image box by one factor. The `p1-noorig` ablation carries the `p1` grammar. Harness tests that must reach the advisor get a 600 s task budget, so machine load cannot fail them. Each engine fix has a test that fails without it.
 - **Result:** container bench in `chameleonizer:v1.26` with the fixed engine mounted, saved as `output/bench/pass-*`. All 169 outputs are byte-identical to `final-*`, and structural checks pass on all 169, so nothing was judged. The bench has no text with a hard line break, so it cannot show the first fix. On the official Level 1 sample with the headline written as "Chase", "the" and "Light" on three lines, the headline at 160x600 went from 7 px to 29 px, and it stays larger than the CTA at all four sizes tested: 1080x1350, 160x600, 300x250 and 728x90.
@@ -48,7 +45,7 @@ How scores were taken below:
 - **Verdict:** keep.
 
 ### 2026-10-30: optional model harness, first real-model run with Qwen3.5-0.8B
-- **Branch:** `rc/engine-v1.28` at `0d43efa`, the v1.28 tree, in a detached worktree. No code change. Weights: `Qwen3.5-0.8B-Q4_K_M.gguf` and `mmproj-F16.gguf` from `unsloth/Qwen3.5-0.8B-GGUF`, 737 MB together, kept outside the repo.
+- **Setup:** v1.28 with no code change. Weights: `Qwen3.5-0.8B-Q4_K_M.gguf` and `mmproj-F16.gguf` from `unsloth/Qwen3.5-0.8B-GGUF`, 737 MB together, kept outside the repo.
 - **Hypothesis:** the harness runs end to end against a real local vision model, and the model's tie-breaks are informative and fast enough to be worth turning on.
 - **Change:** none. Settings are the llama-server preset in `docs/agentic-harness.md`: prompt `p1` with a grammar, `top_k` 2, epsilon 3, 5 s per call, 10 s per task.
 - **Result:**
@@ -60,15 +57,15 @@ How scores were taken below:
   - **Scorer shape:** `tools/docker/agent-bench.Dockerfile`, linux/amd64 under Rosetta, AVX2 without AVX-512, run with `--cpus 4 --memory 6g --network none`. The build took 23 min, almost all of it compiling llama.cpp.
     - Cold load 2.3 to 5.4 s, warmup call 3.5 to 4.9 s, llama-server peak RSS 1.46 GB.
     - Doctor took 95.3 s and 58.6 s per call, both `A`. On the same pair that is 29 to 39 times the Metal latency. The M2's CPU alone accounts for most of the gap, and Rosetta adds 1.3 to 2.6 times on top.
-    - `tools.bench --agent` on 6 dev tasks with the call timeout raised to 120 s: structural 6/6. 3 tasks fired with one call each, taking 29.3 s, 44.2 s and 46.3 s, all `A`, and firing tasks took 30 to 47 s in all. The other 3 fired on the Mac but were single or no_eligible here, because Linux text metrics finish the runner-up differently.
-  - **Not run:** `tools.agree run` and its stage-one gates, because this tree has no `bench/agree/v1`.
+    - `tools.bench --agent` on 6 dev tasks with the call timeout raised to 120 s: structural 6/6. 3 tasks fired with one call each, taking 29.3 s, 44.2 s and 46.3 s, all `A`, and firing tasks took 30 to 47 s in all. The other 3 fired in the Metal run but were single or no_eligible here, because Linux text metrics finish the runner-up differently.
+  - **Not run:** `tools.agree run` and its stage-one gates, because the `bench/agree/v1` dataset did not exist yet.
   - llama-server warns that Qwen-VL needs at least 1024 image tokens for grounding. The harness caps images at 256, which may be part of why the model cannot see the difference, and more tokens would slow CPU calls further.
 - **Verdict:** keep the harness off and do not ship this model. Under the shipped defaults in the scorer, the warmup passes, the first call times out, and the breaker turns the harness off for the run, so outputs stay the engine's. Revisit only with a model that passes the position check, a judged `tools.agree` dataset, and CPU calls under 5 s in the amd64 container.
 
 ### 2026-10-30: v1.28 release, the candidate plus three judged fixes
-- **Branch:** `exp/final`, cut from `exp/rc` at `5732f41`, which is v1.27.
-- **Change:** v1.28 is v1.27 plus the candidate's three engine fixes, the `tools/` fix that exempts only a full-bleed `cover` backdrop from the aspect check, and the three fixes accepted below: buttons kept in one row, cover images sized by their visible pixels, and slimmer floored buttons on small near-square ads. The YouTube safe area was rejected and is left out. The branch also pins every runtime dependency to the benchmark image and carries the release doc fixes. It also carries the optional model harness, off by default, whose entry is below.
-- **Result:** container runs in `chameleonizer:v1.26` with this branch's engine mounted, saved as `output/bench/final-*`.
+- **Base:** v1.27.
+- **Change:** v1.28 is v1.27 plus the candidate's three engine fixes, the `tools/` fix that exempts only a full-bleed `cover` backdrop from the aspect check, and the three fixes accepted below: buttons kept in one row, cover images sized by their visible pixels, and slimmer floored buttons on small near-square ads. The YouTube safe area was rejected and is left out. The release also pins every runtime dependency to the benchmark image and includes the release doc fixes. It also includes the optional model harness, off by default, whose entry is below.
+- **Result:** container runs in `chameleonizer:v1.26` with the release engine mounted, saved as `output/bench/final-*`.
   - **Rules:** structural dev 39/39, test 18/18, probe 60/60, formats 52/52, with no tracebacks or fallbacks. The slowest task takes 6.3 s. 677 tests pass and 10 skip, and 938 and 11 with the model harness.
   - **Outputs against the candidate:** dev 2, probe 14 and formats 4 changed, and test is byte-identical. Every changed output matches the run of the one fix that changed it, except `photo_band__medium_rectangle`, which two fixes touch. `level3__full_hd` changed only because the candidate run hit the 20 s time budget there. The release output for that task is byte-identical to v1.27's.
   - **Pairwise against the candidate,** to check that the fixes combine: `tools.judge --pair`, Opus 5.5, both orders. Dev 1 win, 0 losses, 1 tie. Probe 8 wins, 2 losses, 4 ties. Formats 3 wins, 0 losses, 1 tie, counting the `level3__full_hd` timing win. Overall 12 wins, 2 losses and 6 ties, or 11 wins without the timing win. The losses, `photo_band__leaderboard` and `photo_band__medium_rectangle`, crop the bottle's glow behind the text panel, and the second also shrinks the logo.
@@ -80,35 +77,31 @@ How scores were taken below:
 - **Verdict:** keep as v1.28, the submission build.
 
 ### 2026-10-30: cover images sized by their visible pixels, on the v1.28 candidate
-- **Branch:** `exp/fix-cover-fit-visible-fraction`, commit `69cb113`.
 - **Hypothesis:** `probe_visible_fraction` counted a `cover` image as visible across its whole box. On `photo_band` the bottle fills only y 108 to 852 of its 1080x945 box, so the hero was sized by empty space, read before the logo, and pushed the logo below it.
 - **Change:** `sizing.probe_visible_fraction` maps the asset's alpha bounds through the renderer's center crop for `cover` and clips them to the box, as `contain` already does for its letterbox. Every cover backdrop still maps to the full box, so only the 5 `photo_band` tasks change.
 - **Result:** structural 169/169, no fallbacks, and 673 tests pass. Pairwise against the candidate on probe: 2 wins, 1 loss, 2 ties. `instagram_story` and `wide_skyscraper` win because the logo is back on top. `medium_rectangle` loses on a tiny logo and a glow cropped by the text panel. On `leaderboard` and `linkedin_banner` the verdict flipped with the order.
 - **Verdict:** keep. The glow halo now scales with the bottle and the text panel clips it on wide formats, which the critic does not see. Counting an owned halo in the hero's footprint is the follow-up.
 
 ### 2026-10-30: buttons the source sets side by side stay in one row, on the v1.28 candidate
-- **Branch:** `exp/fix-cta-row-side-by-side`, commit `c893fd8`.
 - **Hypothesis:** on `two_ctas` the ghost "Learn More" button became a badge chip and stacked about 100 px below "Shop Now". The judge called it detached from the CTA group.
 - **Change:** `understand._merge_cta_row` folds the CTA chip together with a chip on its source row when the centres differ by less than half the smaller height, the heights are within 0.8 to 1.25 of each other, and the gap is at most one CTA height. `_size_label_row` then lays the row out side by side. Strip canvases skip the fold, because at 320x50 the row stacked from the top edge to the bottom edge. New `tests/test_cta_row.py`.
 - **Result:** structural 169/169, no fallbacks, and 677 tests pass. Only `two_ctas` at billboard, half_page, instagram_post and instagram_story changed. Pairwise against the candidate: 4 wins, 0 losses, the same in both orders. On billboard the judge noted a smaller logo, 139 to 114 px wide.
 - **Verdict:** keep.
 
 ### 2026-10-30: slimmer floored buttons on small near-square ads, on the v1.28 candidate
-- **Branch:** `exp/fix-small-rect-cta-pad`, commits `3ed61ba` and `d0bedf1`.
 - **Hypothesis:** at 300x250 and 336x280 a CTA label raised to the readable floor kept its padding in ems, so the button grew into a slab and took the height the fine print needed. On Level 3 at 336x280 the fine print landed under the logo.
 - **Change:** `sizing.size_label_chip` also trims a floored CTA's padding by its growth on ads with a width over height of 0.75 to 2.2, at most 120,000 px, and at least 16 lines of copy tall at the readable floor. Without the height floor, `story1__button_120x90` changed too: a split won that wrapped the button onto three lines and covered the logo, and it lost.
 - **Result:** structural 169/169, no fallbacks, and 673 tests pass. 11 tasks changed, all at 300x250 or 336x280. Pairwise against the candidate: dev 0 wins, 0 losses, 2 ties. Probe 3 wins, 0 losses, 3 ties. Formats 2 wins, 0 losses, 1 tie, judged against an uncontended rerun of the candidate. On Level 3 at 336x280 the badges come back ahead of the button and the fine print moves to the bottom, in source order, but the headline, body, badges and button each lose 1 or 2 px. The smallest size and the counts under 5 and 3 px are unchanged on every split.
 - **Verdict:** keep.
 
 ### 2026-10-30: YouTube channel art laid out on its central safe area, rejected
-- **Branch:** `exp/fix-youtube-safe-area`, commit `0983180`.
 - **Hypothesis:** the absolute judge's top issue on all 4 YouTube banners, 2560x1440 in `formats` only, is copy, logo and button outside the central 1546x423 safe area. Laying out on that strip should lift overall from 6 to 7.
 - **Change:** `pipeline.resize_with_report` lays out a canvas within 1% of 2560x1440 on the central strip with the full canvas's 16 px text floor, centres the result, and spreads the backdrops with `finalize.backdrop_box`. It reads geometry only.
 - **Result:** structural 169/169, and only the 4 YouTube tasks changed. Pairwise against the candidate: 1 win, 1 loss, 2 ties. Absolute means on those 4 tasks fell from 6.5 to 5.0 overall, 6.5 to 4.75 intentional, 8 to 6 readability and 8.5 to 7 brand, and one task fell to 4. Type shrank to between a third and half of its size, and one Level 3 text came out at 12 px, under the floor. The judge named tiny type, empty bands above and below, and a 3-line headline.
 - **Verdict:** drop. The judge names the safe area as the top issue on full-canvas layouts but scores the strip lower, so its top-issue comment is not a reliable fix list.
 
 ### 2026-10-30: v1.28 candidate rechecked with the API judge
-- **Branch:** `exp/final` at `93a9cb3`: v1.27 plus the candidate's commits `df0632b`, `927aa4a` and `fd7f2b7`, and `5de6938`, which exempts only a full-bleed `cover` backdrop from the aspect check in `tools/`.
+- **Change:** v1.27 plus the candidate's three engine fixes, and a `tools/` fix that exempts only a full-bleed `cover` backdrop from the aspect check.
 - **Result:** container runs `output/bench/v128-*`. Structural 169/169 with no fallbacks, and 673 tests pass. Pairwise against v1.27, API, both orders: dev 3 wins, 0 losses, 5 ties. Test 1 win, 0 losses, 1 tie. Probe 1 win, 0 losses, 2 ties. Formats 7 wins, 5 losses, 3 ties. Overall 12 wins, 5 losses and 11 ties on 28 changed tasks.
   - The losses are all in formats. `level2__half_banner` grew the headline and shrank the product half under the button. `level3__button_120x90` set the headline on the bottle. `story1__half_banner` crowded the logo with the can.
   - Two losses come from a run cut short, not from the engine. The candidate run hit the 20 s time budget on `level3__full_hd` and `level3__large_rectangle`. An uncontended rerun of `level3__full_hd` is byte-identical to v1.27.
@@ -116,7 +109,7 @@ How scores were taken below:
 - **Verdict:** keep as the base for today's fixes.
 
 ### 2026-10-30: optional model harness, built and checked without weights
-- **Branch:** built from `feat/engine-v1-dd4qmp` at `94a31d8` and applied on top of the v1.28 candidate. Off by default.
+- **Base:** the v1.28 candidate. Off by default.
 - **Hypothesis:** a small local vision model could break near-ties between finished layouts better than the critic alone. Before any model is tried, the harness must change nothing when no model is configured or the model is useless.
 - **Change:** `docs/agentic-harness.md` describes it. In short:
   - `engine/core/pipeline.py` can finish a few runners-up exactly as it finishes the pick (`Outcome.finalists`); the pick is built first and unchanged.
@@ -124,8 +117,8 @@ How scores were taken below:
   - New adapters: the official renderer, image preprocessing, configuration from `CHAMELEON_AGENT*`, scripted, random and replay advisors, an OpenAI-compatible HTTP advisor (stdlib only) and an optional in-process llama.cpp advisor.
   - `engine/resize.py` imports none of it unless `CHAMELEON_AGENT` names a backend.
   - Tools: `tools.bench --agent`, `tools/agree.py`, `tools/agent_stub_server.py`, `tools/digests.py`, and a dev-only amd64 latency image in `tools/docker/`.
-- **Result:** cloud runs, no model weights.
-  - **E1, harness off:** `tools/digests.py` over `input/` and all four suites, 172 tasks, aggregate `2828a0b5` before (`94a31d8`, E0) and after. The E0 digests also match the `rcchip_*` bench outputs on all 169 suite tasks. `tools.bench` without `--agent` on dev, test, probe and formats changed no task against `rcchip_*`, with structural checks 39/39, 18/18, 60/60 and 52/52.
+- **Result:** runs without model weights.
+  - **E1, harness off:** `tools/digests.py` over `input/` and all four suites, 172 tasks, aggregate `2828a0b5` on the candidate without the harness, E0, and the same aggregate with it. The E0 digests also match the `rcchip_*` bench outputs on all 169 suite tasks. `tools.bench` without `--agent` on dev, test, probe and formats changed no task against `rcchip_*`, with structural checks 39/39, 18/18, 60/60 and 52/52.
   - **E1b, useless advisors:** the `null` advisor gave the same aggregate on all 172 tasks. It fired on 63 tasks, kept the default on 60, and ran out of budget on 3. An HTTP advisor pointed at a closed port, a stub server that sleeps 30 s and a stub that answers garbage each opened the breaker on their first firing tasks.
     - The first runs of those three, made with load average about 10 on 4 CPUs, differed from E0 on one or two Level 3 formats tasks (`a4_landscape`, `large_rectangle`). Re-run alone under the same configuration, both tasks were byte-identical to E0.
     - Full re-runs on a quieter machine (load average 3 to 4) gave the E0 aggregate on all 172 tasks for all three.
@@ -146,7 +139,7 @@ How scores were taken below:
 - **Verdict:** keep, off by default. Next: build the agreement dataset from judged rounds, then run stage 1 of `docs/agentic-harness.md` section 7 for each candidate model. Expect a no-go: zero-shot small judges score near chance in the literature, and the harness makes that outcome cost nothing.
 
 ### 2026-10-30: v1.28 candidate, on v1.27: equal-width pills, headline lead on small banners, tiered packed text
-- **Branch:** `feat/engine-v1-dd4qmp`, with `exp/rc` (v1.27) merged in at `94a31d8`. Fixes were built by parallel agents in their own worktrees, each benched on all four splits, reviewed for hard-rule breaks by a separate skeptical agent, then judged.
+- **Base:** v1.27. Parallel agents each built one fix and benched it on all four splits. A separate skeptical agent reviewed each fix for hard-rule breaks before it was judged.
 - **Kept:**
   - **Equal-width pills** (`sizing._size_label_row`): pills the source drew at one width keep one width, the widest label's plus about 0.9 em of padding when the row has room. On v1.27: 4-0 and 2-1, dev 7 and test 2 changed. On v1.26 it had won 2-0.
   - **Headline lead on small banners** (`layout.scale_cap`, `sizing.size_label_chip`): banner canvases may scale until the headline reaches 1.4x the readable floor, and a banner CTA floored above the design's scale trims its padding instead of outgrowing the headline. 4-1 and 6-2 over 13 changed tasks (dev 4, test 1, probe 3, formats 5). Slowest task 6.0 s.
@@ -156,17 +149,17 @@ How scores were taken below:
 - **Rejected:**
   - **Faithful candidate for nearby shapes:** scale the source uniformly when |ln(aspect ratio)| <= 0.35, put the slack into its own whitespace, and relax the critic's whitespace thresholds for it. 3-6 and 3-5 on 10 tasks. The judge preferred v1.27's recomposed, fuller layouts to the designer's layout scaled.
   - **Pill-rounding cap:** a source pill may not grow past 2x its unchanged corner radius on big canvases, so the renderer keeps it round. 4-7 and 2-8 on 15 tasks. The judge preferred larger, squarer chips to round, smaller ones.
-  - **On v1.26, before the merge:** a shared-scale pack that won 5-0 and 5-0 is superseded by v1.27's `packed.py`; a banner logo share of 0.5 instead of 0.6 flipped `x_header_1` to banner columns.
+  - **On v1.26, before the move to the v1.27 base:** a shared-scale pack that won 5-0 and 5-0 is superseded by v1.27's `packed.py`; a banner logo share of 0.5 instead of 0.6 flipped `x_header_1` to banner columns.
 - **Flagged by the reviews, not changed:** missing-asset images are hidden by writing `z_index` and `opacity` (v2 behaviour), and the CTA role reads the first word of the copy (`understand._starts_with_cta_verb`). Both predate this entry; the first depends on the open question about hiding.
 - **Verdict:** keep all three as the v1.28 candidate. Final scores are in `docs/leaderboard.md`.
 
 ### 2026-10-29: v1.27 release candidate, v2 plus the word-pair cap and the packed fallback
-- **Branch:** `exp/rc`, cut from `exp/engine-v2` at `f1eb224`.
+- **Base:** v2.
 - **Hypothesis:** the two fixes accepted today touch different tasks, so together they keep both gains over v2.
-- **Change:** v1.27 is v1.26, plus the `exp/engine-v2` commits, plus the two entries below. The engine commits are cherry-picks of `exp/pairfit` `e461f23` and `exp/tiny-ads` `f422049` and `fa51aab`. The tests and log entries of both branches came along. The branch also holds the packaging script and the viewer add-on, which do not touch `engine/`.
-- **Result:** container runs in `chameleonizer:v1.26` with this branch's engine mounted, saved as `output/bench/rc-*`.
+- **Change:** v1.27 is v2 plus the two entries below, the word-pair cap and the packed fallback, each with its tests. The release also adds the packaging script and the viewer add-on, which do not touch `engine/`.
+- **Result:** container runs in `chameleonizer:v1.26` with the v1.27 engine mounted, saved as `output/bench/rc-*`.
   - **Rules:** structural dev 39/39, test 18/18, probe 60/60, formats 52/52. 666 tests pass and 10 skip. The worst task takes 4.10 s, on `formats`.
-  - **Outputs:** every output that differs from v2 is byte-identical to the run of the single fix that changed it. Dev 1 and probe 3 match `exp/pairfit`, and formats 10 match `exp/tiny-ads`. Test is byte-identical to v2.
+  - **Outputs:** every output that differs from v2 is byte-identical to the run of the single fix that changed it. Dev 1 and probe 3 match the word-pair cap run, and formats 10 match the packed fallback run. Test is byte-identical to v2.
   - **Pairwise against v2:** `tools.judge --pair`, Opus 5.5, both orders. Dev 0 wins, 0 losses, 1 tie. Probe 1 win, 0 losses, 2 ties. Formats 10 wins, 0 losses. Test unchanged. Overall 11 wins, 0 losses and 3 ties on 14 changed tasks, the same verdicts the single fixes got.
   - **Pairwise against v1.26:** dev 0 wins, 0 losses, 2 ties. Probe 5 wins, 0 losses, 2 ties. Formats 10 wins, 0 losses. Test unchanged. Overall 15 wins, 0 losses and 4 ties on 19 changed tasks. `editorial_left__wide_skyscraper`, v2's one loss, is byte-identical to v1.26 again.
   - **Absolute, `tools.judge --run`:**
@@ -186,8 +179,8 @@ How scores were taken below:
 - **Verdict:** keep as v1.27, the release candidate. Tag it `engine-v1.27` after review.
 
 ### 2026-10-29: packed fallback for small ads that pile copy on copy, on top of v2
-- **Branch:** `exp/tiny-ads`, cut from `exp/engine-v2` at `f1eb224`.
-- **Hypothesis:** the 12 formats fails at 4 or below are small ad sizes, mostly Level 3 with text on text. The critic already sees each collision, but no archetype can avoid it: measured on the Mac, Level 3 at 320x50 scored a collision penalty of 82 to 107 in every candidate, and lowering the readable floor to 3 px still left 41 or more. The strip columns stack what they can and park the rest over the copy. A layout that gives every unit its own slot and shrinks all copy at one scale removes the overlap without hiding anything. The floorplan engine won the small sizes 16-8 against v1.26 that way.
+- **Base:** v2.
+- **Hypothesis:** the 12 formats fails at 4 or below are small ad sizes, mostly Level 3 with text on text. The critic already sees each collision, but no archetype can avoid it: measured on macOS, Level 3 at 320x50 scored a collision penalty of 82 to 107 in every candidate, and lowering the readable floor to 3 px still left 41 or more. The strip columns stack what they can and park the rest over the copy. A layout that gives every unit its own slot and shrinks all copy at one scale removes the overlap without hiding anything. The floorplan engine won the small sizes 16-8 against v1.26 that way.
 - **Change:**
   - New `engine/core/packed.py`. It builds a few column arrangements.
     - Banners and strips get a row: one column per picture, then the copy, then a column with the sticker, button and fine print. Variants put the fine print under the copy, split the copy into two columns after the headline, and give pictures 85% or 55% of the height.
@@ -204,11 +197,11 @@ How scores were taken below:
   - **Readability cost:** all 10 changed outputs set text under 8 px, as v2's did, and 55 text elements are under 8 px against v2's 48. Level 3 is the worst. At 120x90 every text is 1 to 3 px. At 234x60 it is 2 to 5 px, at 320x50 3 to 5 px, at 300x50 3 to 4 px and at 320x100 4 to 5 px. On story1 and Level 2 the headline stays at 9 to 14 px, and the subhead and button label run 3 to 5 px. Formats outputs with any text under 8 px: 16 before and 16 after.
 - **Verdict:** keep. It is the first change that clears copy from copy on these sizes without hiding anything, and the judge preferred it on every task it touched. The judge still fails most of them because the copy is too small to read. Fixing that needs fewer pieces of copy on the canvas, which waits on the organizers' answer about hiding elements.
 
-### 2026-10-29: word-pair cap measured at each size, on top of exp/engine-v2
-- **Branch:** `exp/pairfit`, cut from `exp/engine-v2` at `f1eb224`.
+### 2026-10-29: word-pair cap measured at each size, on top of v2
+- **Base:** v2.
 - **Hypothesis:** v2's one judged loss against v1.26, `editorial_left__wide_skyscraper`, comes from `sizing._pair_fit` scaling the widest word pair linearly from the source size.
   - "golden hour." is 478 px wide at 80 px, so the linear cap was 23 px. In the scoring container it measures 142 px at 23 px against a 140 px column. The pair broke and the headline went to 3 lines.
-  - Hinted Linux advances are whole pixels, so widths are not linear in the size. macOS widths are. Across 69 suite sources at 50 tall canvases from 100 to 320 px wide, the linear cap never overshoots on macOS, so neither the tests nor a Mac bench can catch this.
+  - Hinted Linux advances are whole pixels, so widths are not linear in the size. macOS widths are. Across 69 suite sources at 50 tall canvases from 100 to 320 px wide, the linear cap never overshoots on macOS, so neither the tests nor a macOS bench can catch this.
 - **Change:** `_pair_fit` returns the largest integer size at which every neighbouring pair, measured at that size, fits between the side margins. The linear estimate only seeds the search.
   - In the container, the raw cap moved on 17 of the 41 multi-word texts on the 11 suite skyscrapers: 9 down by 1 or 2 px, 8 up by 1 px. Most never bind, because the v1.26 cap stays as the floor.
   - **Checked for the same assumption:** `_keep_one_line` seeds linearly but measures every trial size, so it cannot overflow. `size_label_chip`, `_roomy_button`, `size_rigid`, `layout._fine_print_band`, `layout._strip_chip`, `layout._cta_column` and `pipeline.contain_text` all measure at the integer size they emit.
@@ -221,9 +214,9 @@ How scores were taken below:
 - **Verdict:** keep. It removes v2's only loss against v1.26 and loses nothing against v2.
 
 ### 2026-10-29: the floorplan engine against v1.26
-- **Branch:** a second engine on `feat/floorplan-engine` at `056e762`, a slicing-tree engine sized at one global scale. Its own log and `docs/floorplan.md` are on that branch.
-- **Hypothesis:** its own judge rounds ran in session on macOS renders and reached 21-26 against v1.26 on `dev` and `test`. On container renders and all four splits, it beats v1.26.
-- **Change:** none to this repo. A harness outside the repo called the floorplan `engine.resize.resize` unchanged inside `chameleonizer:v1.26`, rendered with the official renderer, checked `tools.checks.structural` and wrote runs in the `tools.bench` layout. Every source render was byte-identical to the `docker-v1.26f` runs, so both engines went through the same renderer.
+- **What:** a second engine, built separately: a slicing-tree engine sized at one global scale. Its code and its own log are not in this repo.
+- **Hypothesis:** its own judge rounds, run on macOS renders, reached 21-26 against v1.26 on `dev` and `test`. On container renders and all four splits, it beats v1.26.
+- **Change:** none to this repo. A script outside the repo called the floorplan `engine.resize.resize` unchanged inside `chameleonizer:v1.26`, rendered with the official renderer, checked `tools.checks.structural` and wrote runs in the `tools.bench` layout. Every source render was byte-identical to the `docker-v1.26f` runs, so both engines went through the same renderer.
 - **Result:**
   - **Rules:** structural dev 39/39, test 18/18, probe 60/60, formats 52/52. No crash, no letterbox fallback, no source mutation. Like v1.26, it changes opacity and `z_index` only on the 19 images whose asset file is missing.
   - **Speed:** 2x to 9x slower than v1.26 in emulated amd64. Its worst task took 13.3 s of CPU against 1.49 s.
@@ -236,14 +229,14 @@ How scores were taken below:
 - **Verdict:** drop as the submission engine. Its one idea that won, fitting every unit at one shared scale when copy would pile on copy, became the packed fallback above.
 
 ### 2026-10-29: skyscraper headlines and parked fine print, on top of v1.26
-- **Branch:** `exp/engine-v2`, cut from `feat/engine-v1` at v1.26.
+- **Base:** v1.26. The result is called v2 in the entries above.
 - **Hypothesis:** two narrow fixes help without moving anything else.
   - On 160x600 the copy filled 99% of the width but only 68% of the height, because the headline cap is 14% of the short side, about 22 px.
   - Fine print parked in free space took an out-of-order spot, such as between a headline and its big number, whenever its largest size had no in-order spot.
 - **Change:**
   - `sizing._font_cap`: on canvases taller than 2.5 times their width, headlines may reach 20% of the width and other copy 10%. Only 160x600 in the catalogue qualifies.
   - `layout._find_room`: fine print tries smaller readable sizes for an in-order spot before taking an out-of-order one. It never drops to the last-resort half size just to keep the order. With no in-order spot at a readable size, it parks exactly as v1.26 did.
-- **Result:** no API key in this session, so no `tools/judge.py` run. Judged by eye in side-by-side sheets.
+- **Result:** the checks below were judged by eye in side-by-side sheets, before the API judge was available. The API verdicts are at the end of this entry.
   - **Rules:** dev 39/39, test 18/18, probe 60/60, formats 52/52. 404 tests pass. Docker build and offline run pass on the official samples.
   - **Outputs changed:** only skyscraper tasks and `big_number__linkedin_banner`.
     - On skyscrapers, headlines and quotes are larger and fill the column.
@@ -264,7 +257,7 @@ How scores were taken below:
       - No headline the change touched went to one word per line.
       - No critic penalty rose on any task, counting collision, cut-off, overflow, hidden content, small text and headline lines. The ribbon box that met the logo box on `portrait_ad_300x1050_8` no longer does.
       - Timing is unchanged, with a worst task of 1.35 s.
-  - **Fuzz, and one hardening fix:** odd headlines on tall, square and strip canvases, both on v1.26 and on this branch: empty, spaces only, one giant word, emoji, newlines, 60 words, accents, an unknown font, and sizes of 0, 0.5 and 500.
+  - **Fuzz, and one hardening fix:** odd headlines on tall, square and strip canvases, both on v1.26 and on v2: empty, spaces only, one giant word, emoji, newlines, 60 words, accents, an unknown font, and sizes of 0, 0.5 and 500.
     - Both versions fell back to the letterbox on all 35 `font_size: 0` cases. A division by zero, present in v1.26 too.
     - The schema's minimum is 1, so `pipeline._sanitized` now raises a text font size under 1, or one that is not a number, to 1 before layout, as it already did for geometry.
     - **After the fix:** no fallbacks, and every `font_size: 0` output passes the structural checks.
@@ -311,7 +304,7 @@ How scores were taken below:
   - **Placement and id fuzz, no changes needed:**
     - **Off-canvas sources:** every element of each official sample moved half off the left or bottom edge, wholly past the right or top edge, or five canvases away, across 5 targets, for 800 cases. No exceptions and no rule violations.
     - **Unusual ids:** unicode, spaces, 500-character ids, plain numbers, ids shaped like internal unit keys (`g:0`, `auto:bg`, `row:g:x`, `lines:1`, `set:2`) and one empty id, across 5 targets, for 90 cases. No exceptions, and every layout identical to the one with the original ids.
-  - **Rubric checks on drawn pixels:** across all 357 tasks, in this branch and in v1.26.
+  - **Rubric checks on drawn pixels:** across all 357 tasks, in v2 and in v1.26.
     - **No unwanted collisions:** at 300x250 and up, no text overlaps another text, and no text covers a picture.
       - Text is measured with the renderer's own wrap and alignment.
       - A picture is its asset's visible alpha box placed as `contain` draws it, so transparent margins never count.
@@ -319,7 +312,7 @@ How scores were taken below:
       - Zero overlaps in both versions.
       - The first version of the check missed a headline planted on the product, because it skipped every image wider than 95% of the canvas, which includes the bottle's wide transparent box. It now leaves out a backdrop by box area, and it catches both planted cases.
     - **Readable and on brand:** no task's worst text contrast fell below v1.26's, and no logo's visible height shrank.
-    - **New test:** `tests/test_no_overlaps.py` runs the overlap check on `dev`, `test`, `probe` and `formats`, 131 tasks with 39 strips skipped. It includes a self-test that the check finds planted overlaps, and it passes on v1.26 and on this branch. The suite is now 568 passed.
+    - **New test:** `tests/test_no_overlaps.py` runs the overlap check on `dev`, `test`, `probe` and `formats`, 131 tasks with 39 strips skipped. It includes a self-test that the check finds planted overlaps, and it passes on v1.26 and on v2. The suite is now 568 passed.
   - **Banner sizes for the fine-print change:** 50 new designs, seeds from 930000, 10 each at LinkedIn Banner, X Header, Billboard, Wide Banner and Facebook Cover.
     - All 50 pass the structural checks.
     - **First version:** one output changed. In `facebook_cover_b9` the fine print moved from above the headline to under the button, but only by dropping from 10 px to the last-resort 7 px, under the readable floor of 10.
@@ -333,7 +326,7 @@ How scores were taken below:
   - **Skyscraper logos:** the logo box already spans the full 160 px, and the asset's transparent margins make it look small. A larger box would leave the canvas.
   - **Level 3 at 336x280:** the fine print still sits above the headline, because no size has an in-order free spot. Fixing it means reserving room in the split.
   - **Stickers grazing fine print** on `pinterest_pin_f0`: the no-touch rule already lost 1-4 in v1.26.
-- **Judged on 2026-10-29:** `chameleonizer:v1.26` with this branch's engine mounted, at `f1eb224`.
+- **Judged on 2026-10-29:** container runs in `chameleonizer:v1.26` with the v2 engine mounted.
   - **Rules:** structural dev 39/39, test 18/18, probe 60/60, formats 52/52. 568 tests pass and 49 skip. The worst task takes 7.25 s.
   - **Outputs changed against v1.26:** dev 2, both wide skyscrapers. Probe 8: seven wide skyscrapers and `big_number__linkedin_banner`. Test and formats are byte-identical.
   - **Pairwise against v1.26:** `tools.judge --pair`, both orders. Dev 1 win, 0 losses, 1 tie. Probe 4 wins, 1 loss, 3 ties. `big_number__linkedin_banner` won, with the fine print out from between the headline and "40% OFF".
@@ -342,7 +335,6 @@ How scores were taken below:
 - **Verdict:** keep. It wins 5-1 against v1.26 on the tasks it changes, and the word-pair fix removes the loss.
 
 ### 2026-10-18: v1.26, fixes from the v1.25 rules audit
-- **Branch:** `feat/engine-v1`.
 - **Audit:** four independent auditors plus a skeptic per flagged finding, in the same way as the v1.16 audit. It found no rule break in the engine.
   - About 1,125 runs on macOS and inside the scoring container, at the suite sizes and at extremes from 50x50 to 4000x4000.
   - Every id once, every box inside the canvas, nothing under 1 px, images within 0.25% of source aspect, copy and fonts unchanged, integer font sizes, no crash.
@@ -367,7 +359,7 @@ How scores were taken below:
 - **Verdict:** keep v1.26.
 
 ### 2026-10-18: v1.24 and v1.25, margins and dense small rectangles
-- **Branch:** `feat/engine-v1`. The work was an agent in a worktree, judged by the API on container runs.
+- **Method:** one agent built the changes, and the API judge scored them on container runs.
 - **Root causes found:**
   - The gap in `_columns` added the spare width on top of the minimum gaps, so every banner row and strip ran about one gap past both margins. A CTA sat 18 px from the edge on `facebook_cover_0` and 3 px on the mobile banners.
   - Pictures sized larger than their box could fit shrank about their centre but kept their column, leaving lopsided rows and splits.
@@ -387,7 +379,7 @@ How scores were taken below:
 - **Verdict:** keep v1.25.
 
 ### 2026-10-18: v1.22.1 to v1.23, print sizes, buttons and decorations
-- **Branch:** `feat/engine-v1`. Agents worked in parallel worktrees, and the API judge scored each on container runs against the current best.
+- **Method:** agents built candidates in parallel, and the API judge scored each on container runs against the current best.
 - **New split, `formats`:** the brief names "a printed poster" among the target shapes, and the catalogue had no print sizes. The split has 32 tasks covering A4, US Letter, an 18x24 poster, Full HD, a YouTube banner, 336x280 and 970x90.
 - **Result:** pairwise on changed tasks, new-base.
   - **Big canvases, accepted as v1.22.1:** formats 9-2; dev, test and probe unchanged.
@@ -397,18 +389,18 @@ How scores were taken below:
   - **Button padding and wrap, accepted on tall canvases only:** dev 1-0, probe 2-0, test and formats unchanged.
     - The first version applied everywhere. It lost the three 336x280 tasks 0-3 and flipped two medium rectangles.
     - Gated to canvases narrower than 0.75 of their height, a long label wraps into a two-line pill with real padding.
-  - **Corner radii grow with chip height, held:** dev 3-0, test 2-0, probe 8-0, and it changes only `corner_radius`. Whether that field may change is an open organizer question. The commit is `7589c8c` on local `exp/buttons`, also `f1fd7f5` on `exp/buttons-v1`.
+  - **Corner radii grow with chip height, held:** dev 3-0, test 2-0, probe 8-0, and it changes only `corner_radius`. Whether that field may change is an open organizer question. The change stays out of the engine until the organizers answer.
   - **Decorations by a weighted cost, accepted as v1.23:** dev 18-5, test 5-1, probe 43-2.
     - The code is `engine/core/decor.py`. Each decoration picks a position and scale from candidate spots: the source-relative spot, edge positions and depths, at 1.0 to 0.6 scale.
     - The cost covers covering copy, buttons and the logo, overlap the source did not have, edges the source kept clear, distance and direction from the source spot, shrink, and halos that keep framing their product.
     - It mirrors when the layout mirrors. The full weights are in the module.
     - Two earlier rewrites were coin flips on macOS renders. Judged on container renders, this one is the largest single gain since v1.15.
 - **Interactions after merging:** dev 1-1, probe 4-1, and formats 14-1, where the decoration rule had not been judged before.
-- **Still running at the time of writing:** `exp/margins`, outer margins and balance, and `exp/dense-small`, dense designs on small rectangles.
+- **Still running at the time of writing:** outer margins and balance, and dense designs on small rectangles. The next entry has both results.
 - **Verdict:** keep v1.23.
 
 ### 2026-10-17: v1.21 and v1.22, the last strip and badge fixes
-- **Branch:** `feat/engine-v1`. Two agents worked in parallel worktrees, and the API judge scored each on container runs against v1.20.
+- **Method:** two agents built changes in parallel, and the API judge scored each on container runs against v1.20.
 - **Result:** pairwise on changed tasks, new-base.
   - **Readable strip candidates, accepted as v1.21:** test 1-0, probe 1-0 with 4 ties; dev unchanged.
     - On 320x50 and 728x90 strips, two extra candidates, with and without the product in the row, keep copy at 7 px or more and fine print at 6 px. They give up unless the headline stays at least 10 px, on two lines at most, and 1.4 times any other copy.
@@ -422,7 +414,7 @@ How scores were taken below:
 - **Verdict:** keep v1.22 as the submission candidate.
 
 ### 2026-10-17: v1.19 to v1.20, and a second judge on container renders
-- **Branch:** `feat/engine-v1`. Agents worked in parallel worktrees, and the API judge scored every candidate on container runs against the current best.
+- **Method:** agents built candidates in parallel, and the API judge scored every candidate on container runs against the current best.
 - **Result:** pairwise on changed tasks, new-base.
   - **Text-link CTAs, accepted:** dev 1-0, no other change.
     - In banner columns, a CTA with no button shape stacks under the copy at the source ratio instead of taking a button-sized column. This fixes `facebook_cover_1`, a fail since v1.12.
@@ -442,7 +434,7 @@ How scores were taken below:
 - **Verdict:** keep v1.20. The remaining fails are the most crowded 320x50 and 728x90 strips and the official Level 3 badge row.
 
 ### 2026-10-17: v1.17 and v1.18, judged by the API on container runs
-- **Branch:** `feat/engine-v1`. Five agents worked in parallel, each in its own worktree and benched inside the scoring container. The API judge compared every candidate with the container baseline `output/bench/docker-v1.16.1-*`.
+- **Method:** five agents built candidates in parallel, each benched inside the scoring container. The API judge compared every candidate with the container baseline `output/bench/docker-v1.16.1-*`.
 - **Result:** pairwise on changed tasks, both image orders, new-base.
   - **Tall rhythm, accepted:** dev 4-1, test 0-0 (1 tie), probe 6-1.
     - A logo pinned to the top of a tall canvas sits at most two stack gaps above its stack; otherwise the two centre together.
@@ -467,7 +459,6 @@ How scores were taken below:
 - **Verdict:** keep v1.18. Both new measurer methods, `ink` and `word_gaps`, must be implemented by the Express add-on's measurer, or approximated from font metrics.
 
 ### 2026-10-17: rules audit, v1.16.1 hardening, and the Docker metrics gap
-- **Branch:** `feat/engine-v1`.
 - **Audit:** five independent auditors, one per rule family, then a skeptic per flagged finding. They covered the rulebook, every output under a fresh checker, asset pixels and the renderer, id blindness by renaming every id, and runtime.
   - **Rule breaks:** none in the engine.
   - **Confirmed facts:**
@@ -476,7 +467,7 @@ How scores were taken below:
     - images stay within 2% of their aspect;
     - no pixels are written, there is no model or network, and the organizer files are unchanged.
   - **Submission gap:** FAQ Q5 asks for a viewer add-on in stage one, "required (but not scored)"; none exists yet.
-- **API judge now available again**, so the session-judged versions were checked against v1.14. v1.16 wins 11-1 on dev, 10-0 on test and 46-5 on probe.
+- **API judge now available again**, so the versions judged by in-session agents were checked against v1.14. v1.16 wins 11-1 on dev, 10-0 on test and 46-5 on probe.
 - **v1.16.1 hardening:** no dev or test output changes; the two letter-spaced probe outputs change.
   - Unit keys can no longer collide with element ids. An id shaped like "g:3" had merged a headline with a button group.
   - No image collapses below 1 px on tiny formats such as 88x31.
@@ -491,8 +482,8 @@ How scores were taken below:
 - **Verdict:** keep v1.16.1, tagged. The container baselines are `output/bench/docker-v1.16.1-*`.
 
 ### 2026-10-16: v1.16, generalisation fixes from the probe split
-- **Branch:** `feat/engine-v1`. Four fixes came from a parallel workflow, one agent per failure mode, each on its own `exp/` branch.
-- **Why:** the new `probe` split showed v1.15 at 5.6 overall in the session judge, against 6.7 on `dev`, with 8 of 60 tasks at 4 or below. Every failure was a structure the generated designs never contain.
+- **Method:** four fixes came from a parallel workflow, one agent per failure mode.
+- **Why:** the new `probe` split showed v1.15 at 5.6 overall with the in-session judge, against 6.7 on `dev`, with 8 of 60 tasks at 4 or below. Every failure was a structure the generated designs never contain.
 - **Result:** blind in-session pairwise against v1.15, both image orders, changed tasks only. None of the fixes changes a `test` output.
   - **Type cap, accepted:** probe 3-0, 3 ties. Text may keep its source size times the scale at which the whole source fits. The fixed cap of 14% of the short side had shrunk a 210 px "40% OFF" below its own subhead's growth.
   - **Containers, accepted:** probe 10-0. A rectangle, not the background or a button, that holds two or more content pieces becomes a container. After layout it is fitted behind the units it held, keeps reaching the canvas edges it touched, and never grows over other content. Before, card panels and photo bands drifted as decoration: empty blobs, bands cutting across the product.
@@ -500,7 +491,7 @@ How scores were taken below:
   - **Reading order, accepted:** probe 13-0, 3 ties, and dev 0-0, 1 tie. Units are ordered by a recursive XY-cut on visible boxes, so a column is read to its end before the next. Small text above the CTA is never legal. Strip leftovers join their column after the unit they follow.
   - **Image sets, accepted:** probe 4-0, 1 tie. Pictures of similar area side by side, or stacked, form one unit that scales as a single picture, so a matched pair stays a pair.
 - **Combined, v1.16:** the 13 probe tasks where the fixes interact went 10-1 with 2 ties against v1.15. The loss is the tucked divider again.
-  - **Probe absolute, session judge:** 6.28 overall, up from 5.63, with fails at 4 or below down from 8 to 4. Card panels went from 4.8 to 7.0 and photo bands from 4.8 to 6.2.
+  - **Probe absolute, in-session judge:** 6.28 overall, up from 5.63, with fails at 4 or below down from 8 to 4. Card panels went from 4.8 to 7.0 and photo bands from 4.8 to 6.2.
   - **Weakest left:** `editorial_left` and `event_story`. Their kicker can outweigh a small headline, a product's floor shadow detaches, and strips run short of room.
 - **Follow-ups:**
   - A tucked mark should never overlap glyphs; it could reserve height when the gap is too small.
@@ -508,11 +499,11 @@ How scores were taken below:
   - The critic does not see containers.
 
 ### 2026-10-16: v1.15 from parallel candidates, judged blind in session
-- **Branch:** `feat/engine-v1`. Five candidates came from a parallel experiment workflow, one agent per idea, each rebased onto v1.14.
-- **How it was judged:** Claude agents inside the session judged blind.
+- **Method:** five candidates came from a parallel experiment workflow, one agent per idea, each built on v1.14.
+- **How it was judged:** Claude agents inside a Claude Code session judged blind, as `docs/benchmark.md` describes.
   - Each agent saw `original.png`, `A.png` and `B.png` with the API judge's rubric. Each task was asked in both image orders, and the two orders went to different agents.
   - A verdict that flips with the order counts as a tie, as in `tools/judge.py`.
-  - **Calibration:** on 31 past tasks where the API judge was decisive, the session judges agreed 24 times, tied 7 times and never contradicted it. They are more conservative, but not misleading.
+  - **Calibration:** on 31 past tasks where the API judge was decisive, the in-session judges agreed 24 times, tied 7 times and never contradicted it. They are more conservative, but not misleading.
 - **Result:** pairwise against v1.14 on changed tasks only, dev then test, new-base.
   - **Strips, accepted:** 5-0 and 2-0. Leftover copy stacks above or below the strip's copy or button column instead of parking in free space. Buttons pad their labels tighter, edge images keep their transparent margin on the canvas, stickers may shrink to clear the copy, and the copy gives up height before anything is stranded.
   - **Typography, accepted:** 6-1 and 2-0. Wraps take the most even break with the same line count, scored on ragged lines and breaks inside a phrase, and a one-line source headline shrinks up to 12% to stay one line.
@@ -531,7 +522,6 @@ How scores were taken below:
 - **Verdict:** keep v1.15. Decoration placement and banner columns against split are both judge coin flips today, so the next gains are elsewhere.
 
 ### 2026-10-16: critic recalibrated against the candidate audit
-- **Branch:** `exp/critic`.
 - **Hypothesis:** the critic's choice between candidates is often arbitrary. In 9 of the 17 dev tasks with a split, `split-left` and `split-right` scored exactly the same, so candidate order picked the left one. The audit reasons in `output/bench/cand-v113-dev/audit.json` name what the judge used to break those ties.
 - **Change:** four critic terms in `engine/core/critic.py`. None of them moves an element.
   - **Busy backdrop:** the mean share of each copy box, logo included, that sits on fine detail in the background image, such as baked-in dots. Weight 24, capped at 2 points, so it settles close calls and never overrides structure. A new `AssetProbe.busyness` port supplies the detail mask, so the core still does no file access.
@@ -550,7 +540,6 @@ How scores were taken below:
   - Neither is a critic problem. Strips need layout work.
 
 ### 2026-10-16: robustness, a second judge, and the plateau
-- **Branch:** `feat/engine-v1`.
 - **Change and result:**
   - **v1.13.1, a robustness fix:** `tests/test_stress.py` runs 14 odd designs on 6 extreme canvases, from 50x50 to 4000x4000 plus strips, for 98 cases.
     - The only failure: image-only designs fell back to the letterbox on banners and strips, because the row layout required a text column. Fixed.
@@ -567,7 +556,6 @@ How scores were taken below:
   - Keep v1.13.1.
 
 ### 2026-10-16: v1.12 to v1.13, and two rejected placement ideas
-- **Branch:** `feat/engine-v1`.
 - **Change and result:** pairwise against the previous best, dev then test.
   - **v1.12, accepted:** 4-2 and 3-0. On canvases more than 2.2 times wider than tall, the font cap follows the row height: 34% of it for headlines, 20% for other text. The old cap, 14% of the short side, left leaderboard headlines at about 12 px beside a much bigger button.
   - **v1.12.1, accepted:** 1-0, all else identical. Text-only CTAs that overflow their banner column shrink until they fit. The higher v1.12 cap had let one balloon and get cut off.
@@ -579,7 +567,6 @@ How scores were taken below:
   - Ideas that trade symmetry for detail-avoidance lose.
 
 ### 2026-10-16: v1.11 and two rejected spacing ideas
-- **Branch:** `feat/engine-v1`.
 - **Change and result:** pairwise against the previous best, dev then test.
   - **Orphan control, accepted as v1.11:** 4-0 and 2-0. When a wrap leaves a single word on the last line, the measure narrows in 5% steps until the last line holds two words or more, keeping the line count (`_balanced_width` in `engine/core/sizing.py`).
   - **Weighted decoration placement, rejected:** tried in the same round, the combination lost 5-8. Isolating orphan control showed this change caused the losses. It weighted the logo and copy at 3, the product at 0.5, and added a distance tie-break.
@@ -589,7 +576,6 @@ How scores were taken below:
   - Lesson for future changes: this judge rewards even spacing and the original proportions over textbook design moves. Test spacing ideas against it before investing in them.
 
 ### 2026-10-16: hiding policy, judged
-- **Branch:** `feat/engine-v1`.
 - **Hypothesis:** hiding low-priority elements under the background (`CHAMELEON_DROP_POLICY=occlude`) beats keeping everything visible. This bears on open question 1 for the organizers.
 - **Change:** v1.10 run with occlude, compared pairwise against v1.10 with `none`.
 - **Result:**
@@ -598,7 +584,6 @@ How scores were taken below:
 - **Verdict:** keep `none` as the default whatever the organizers answer. The occlude policy now hides only on strips (`engine/core/layout.py`, `_place_leftovers`), in case a later engine needs it.
 
 ### 2026-10-16: judge-driven iterations v1.8 to v1.10
-- **Branch:** `feat/engine-v1`.
 - **Hypothesis:** the judge's most repeated complaints have mechanical fixes.
 - **Change and result:** pairwise numbers compare against the previous best, dev then test.
   - **v1.8, accepted:** 17-2 and 3-1. Decorative shapes move to the corner or edge spot that covers the least text and button area, instead of keeping their source-relative position. Translucent circles behind copy had been the judge's most common complaint.
@@ -629,8 +614,7 @@ How scores were taken below:
 - **Verdict:** keep v1.10. What remains is mostly strips under the no-hiding policy, where everything must stay visible, plus the intentional rubric row.
 
 ### 2026-10-16: judge-driven iterations v1.4 to v1.7
-- **Branch:** `feat/engine-v1`.
-- **Hypothesis:** let Claude's pairwise verdicts on the frozen suite decide each change, instead of my eye or the engine critic.
+- **Hypothesis:** let Claude's pairwise verdicts on the frozen suite decide each change, instead of judging by eye or by the engine critic.
 - **Change:**
   - New tooling: the frozen suite in `bench/suite/`, pairwise judging in both orders, and task-by-task comparison with side-by-side images. See `docs/benchmark.md`.
   - The engine changes per version are in `docs/leaderboard.md`.
@@ -652,7 +636,6 @@ How scores were taken below:
   4. The official Level 3 sample.
 
 ### 2026-10-13: drop policy comparison
-- **Branch:** `feat/engine-v1`.
 - **Hypothesis:** hiding low-priority elements under the opaque background fixes the 728x90 case.
 - **Change:** same engine as iteration 2, with `CHAMELEON_DROP_POLICY=occlude`.
 - **Result:**
@@ -662,7 +645,6 @@ How scores were taken below:
 - **Verdict:** revisit once the organizers answer whether hiding is allowed; it is open question 1 in `docs/research.md`. The default stays `none`.
 
 ### 2026-10-13: engine v1, iteration 2
-- **Branch:** `feat/engine-v1`.
 - **Hypothesis:** four iteration-1 failure clusters have cheap, general fixes.
 - **Change:**
   - Images whose transparent margins would cross the canvas edge now shrink around their slot. Before, the final clamp shifted them sideways, which caused six of the seven iteration-1 fails.
@@ -684,7 +666,6 @@ How scores were taken below:
   5. Time the Docker image under amd64 emulation.
 
 ### 2026-10-13: engine v1, iteration 1
-- **Branch:** `feat/engine-v1`.
 - **Hypothesis:** a deterministic pipeline beats the stretch baseline without any model. The pipeline:
   1. infer roles and groups;
   2. propose layouts per aspect bucket, as a stack, a split, columns or a strip;

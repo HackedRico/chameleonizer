@@ -46,12 +46,12 @@ KEEP = (
     "addon/",
 )
 REMOVE = {
-    ".github/README.md": "the team landing page, which GitHub shows ahead of the root README",
-    "CLAUDE.md": "instructions for the team's coding agents",
-    "docs/team-plan.md": "team workstreams, branch rules and the submission plan",
+    ".github/README.md": "the development repo's landing page, which GitHub shows ahead of the root README",
+    "CLAUDE.md": "contributor notes for the development repo",
+    "docs/team-plan.md": "contributor notes for the development repo",
     README_SOURCE: "becomes the root README.md",
-    "docs/assets/logo.svg": "shown only by the team landing page",
-    "docs/assets/social-preview.png": "the private repo's social preview image",
+    "docs/assets/logo.svg": "shown only by the development repo's landing page",
+    "docs/assets/social-preview.png": "the development repo's social preview image",
     "docs/brief.pdf": "the organizers' brief, which their public starter repo does not ship",
 }
 
@@ -372,7 +372,7 @@ def build_package(ref: str, out: Path, force: bool) -> Package:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build the submission copy of one git ref, without publishing it.")
-    parser.add_argument("ref", help="commit, branch or tag to package, such as origin/exp/engine-v2")
+    parser.add_argument("ref", help="commit, branch or tag to package, such as main or engine-v1.29")
     parser.add_argument("out", type=Path, help="directory for the package; it must be new, empty or a previous package")
     parser.add_argument("--verify", action="store_true",
                         help="also build and run the image as the organizers' README says")

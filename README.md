@@ -88,7 +88,7 @@ We tested the harness with one real local model, Qwen3.5-0.8B. In all 80 answers
 
 ## Viewer add-on
 
-FAQ Q5 asks for a viewer add-on, which is required but not scored. `addon/` holds an Adobe Express panel that shows an official sample's source beside the engine's output at six formats. The panel shows PNGs that `addon/build_renders.py` rendered in the scoring image, and `addon/README.md` has the steps to load it. Nobody has tested the panel inside Express yet.
+FAQ Q5 asks for a viewer add-on, which is required but not scored. `addon/` holds an Adobe Express panel that shows an official sample's source beside the engine's output at six formats. The panel shows PNGs that `addon/build_renders.py` rendered in the scoring image, and `addon/README.md` has the steps to load it. We loaded it in Adobe Express and used **Add to page** to place a render on the canvas.
 
 ## Repo map
 
