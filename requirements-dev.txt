@@ -1,0 +1,4 @@
+pytest>=8
+anthropic>=1.0
+numpy
+python-dotenv>=1.0

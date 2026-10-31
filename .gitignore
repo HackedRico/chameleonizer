@@ -20,3 +20,14 @@ venv/
 # Generated run artifacts
 output/*
 !output/.gitkeep
+
+# Local secrets, such as ANTHROPIC_API_KEY for tools/judge.py
+.env
+.env.*
+!.env.example
+
+# Agent worktrees created by Claude Code workflows
+.claude/worktrees/
+
+# Local model weights for the optional model harness (docs/agentic-harness.md)
+models/

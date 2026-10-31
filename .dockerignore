@@ -1,0 +1,9 @@
+# Keep secrets and local artifacts out of the Docker build context.
+.env
+.env.*
+.venv/
+output/
+.git/
+.claude/
+# Model weights stay out of the scoring image; tools/docker/agent-bench.Dockerfile is the only image that uses them.
+models/
