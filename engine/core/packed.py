@@ -4,7 +4,9 @@ import math
 from dataclasses import dataclass, replace
 
 from engine.core.layout import _STRIP_PAD, content_rect, finish_candidate
-from engine.core.sizing import Ctx, Patches, Sized, image_frame, size_image, size_unit
+from engine.core.sizing import (
+    Ctx, Patches, Sized, image_frame, is_placeholder, placeholder_height, size_image, size_unit,
+)
 from engine.core.types import CONTENT_ROLES, Box, Candidate, Unit, union_all
 
 # =============================================================================
@@ -127,9 +129,12 @@ def _headline_lines(ctx: Ctx, patches: Patches) -> int:
 def _arrangements(ctx: Ctx) -> list[tuple[str, list[_Column]]]:
     """Named column arrangements of the content units, in reading order within each column."""
     units = [u for u in ctx.scene.units if u.role in CONTENT_ROLES]
-    pictures = [u for u in units if u.kind == "image"]
+    # A missing asset's grey placeholder sits after the action at the copy's scale: in a column of
+    # its own it was sized to the row height, larger than the product, and squeezed the copy.
+    blanks = [u for u in units if is_placeholder(ctx, u)]
+    pictures = [u for u in units if u.kind == "image" and u not in blanks]
     stickers = [u for u in units if u.role == "sticker"]
-    ctas = [u for u in units if u.role == "cta"]
+    ctas = [u for u in units if u.role == "cta"] + blanks
     legal = [u for u in units if u.role == "legal"]
     copy = [u for u in units if u not in pictures and u not in stickers and u not in ctas and u not in legal]
     if not units:
@@ -235,6 +240,8 @@ def _unit(ctx: Ctx, unit: Unit, scale: float, floor: int, avail_w: float, rect: 
     if unit.kind == "image":
         frame, frac = image_frame(ctx, unit)
         least = {"logo": _STACK_LOGO, "hero": _STACK_HERO}.get(unit.role, 0.0) * ctx.H
+        if is_placeholder(ctx, unit):
+            least = placeholder_height(unit)
         return size_image(ctx, unit, min(max(frac.h * frame.h * scale, least), rect.h), avail_w)
     if unit.role in _LEAD_ROLES:
         scale *= tier.boost ** _LEAD_ROLES[unit.role]

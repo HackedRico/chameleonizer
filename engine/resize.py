@@ -31,7 +31,8 @@ logger = logging.getLogger(__name__)
 
 # Repo root, so brand-kit paths resolve the same under `python -m engine.main` and in Docker.
 _ROOT = Path(__file__).resolve().parents[1]
-# "none" keeps every element visible; "occlude" may hide low-priority units, pending organizer answer.
+# "none" keeps every element visible, as the organizers' October 22 recap asks. "occlude" hides
+# missing assets and, on strips, low-priority units, and stays opt-in for experiments.
 _POLICY = os.environ.get("CHAMELEON_DROP_POLICY", "none")
 # Values of `CHAMELEON_AGENT` that leave the model harness off, as does leaving it unset.
 _AGENT_OFF = frozenset({"", "0", "off", "false", "no", "none"})

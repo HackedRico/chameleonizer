@@ -282,7 +282,8 @@ def _shape_overlap(el: dict[str, Any], box: Box) -> float:
 
 def _source_side(ctx: Ctx, units: list[Unit], boxes: dict[str, Box], W: float, add) -> None:
     """Product moved to the other side of the copy from where the designer put it."""
-    hero = next((u for u in units if u.role == "hero"), None) or next((u for u in units if u.role == "image"), None)
+    # Only a missing asset is a secondary image without a hero, and its placeholder shows no product.
+    hero = next((u for u in units if u.role == "hero"), None)
     copy = [u for u in units if u.kind in _COPY_KINDS]
     if hero is None or not copy:
         return

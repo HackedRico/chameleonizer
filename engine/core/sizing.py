@@ -993,6 +993,22 @@ def _tight_width(
     return float(candidate) if again.lines == lines else avail_w
 
 
+def is_placeholder(ctx: Ctx, unit: Unit) -> bool:
+    """True for a picture whose every asset is missing, which the renderer draws as a grey box."""
+    return unit.kind == "image" and not any(
+        ctx.probe.exists(ctx.scene.elements[m].get("asset_id", "")) for m in unit.member_ids)
+
+
+# Shortest side, in px, a missing asset's placeholder keeps. At Level 3's 320x50 the packed row set it
+# at 10x4, a speck rather than a picture.
+PLACEHOLDER_SIDE = 8.0
+
+
+def placeholder_height(unit: Unit) -> float:
+    """Least height that keeps a placeholder's shorter side at `PLACEHOLDER_SIDE`."""
+    return PLACEHOLDER_SIDE * max(1.0, unit.box.h / max(unit.box.w, 1e-6))
+
+
 def visible_fraction(ctx: Ctx, el: dict[str, Any]) -> Box:
     """Where the image's visible pixels sit inside its element box, as fractions."""
     return probe_visible_fraction(ctx.probe, el)

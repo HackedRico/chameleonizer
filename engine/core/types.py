@@ -166,6 +166,7 @@ class Scene:
     units: tuple[Unit, ...]
     background_ids: tuple[str, ...]
     decoration_ids: tuple[str, ...]
+    # Images whose asset is missing, set aside for layout to hide; empty unless the occlude policy runs.
     missing_ids: tuple[str, ...]
     centered: bool
     containers: tuple[Container, ...] = ()

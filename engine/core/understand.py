@@ -34,11 +34,16 @@ _HELD_SHARE = 0.8
 _BUTTON_AREA = 0.08
 
 
-def understand(source: dict[str, Any], probe: AssetProbe, button_rows: bool = True) -> Scene:
+def understand(
+    source: dict[str, Any], probe: AssetProbe, button_rows: bool = True, hide_missing: bool = False
+) -> Scene:
     """Build the `Scene` for `source`, assigning every element a role or a backdrop slot.
 
     `button_rows` off keeps the buttons beside the call to action as separate badges, for canvases
-    too short to set them side by side."""
+    too short to set them side by side. `hide_missing` sets an image whose asset file is missing
+    aside in `missing_ids` for layout to hide, which only the opt-in occlude policy asks for. By
+    default such an image is laid out like any other: the renderer draws it as a grey placeholder
+    filling its box, and the organizers' October 22 session asks that every input element stay visible."""
     if "canvas" not in source or "elements" not in source:
         raise ValueError("source must have `canvas` and `elements`")
     cw, ch = float(source["canvas"]["width"]), float(source["canvas"]["height"])
@@ -62,7 +67,8 @@ def understand(source: dict[str, Any], probe: AssetProbe, button_rows: bool = Tr
     missing = [
         eid
         for eid, el in elements.items()
-        if el["type"] == "image" and eid not in background and not probe.exists(el.get("asset_id", ""))
+        if hide_missing and el["type"] == "image" and eid not in background
+        and not probe.exists(el.get("asset_id", ""))
     ]
     taken = set(background) | set(missing)
 
@@ -89,7 +95,7 @@ def understand(source: dict[str, Any], probe: AssetProbe, button_rows: bool = Tr
 
     units: list[Unit] = []
     units += _chip_units(groups, elements)
-    units += _image_units(elements, taken | grouped, cw, ch, issued)
+    units += _image_units(elements, taken | grouped, cw, ch, issued, probe)
     chip_cta = next((u.box for u in units if u.role == "cta"), None)
     units += _text_units(elements, taken | grouped, ch, marks, chip_cta)
     if button_rows:
@@ -342,12 +348,20 @@ def _chip_units(groups: dict[str, list[str]], elements: dict[str, dict[str, Any]
 
 
 def _image_units(
-    elements: dict[str, dict[str, Any]], taken: set[str], cw: float, ch: float, issued: dict[str, str]
+    elements: dict[str, dict[str, Any]], taken: set[str], cw: float, ch: float, issued: dict[str, str],
+    probe: AssetProbe,
 ) -> list[Unit]:
-    """Split loose images into the logo, the hero, and secondary images."""
-    images = [el for eid, el in elements.items() if el["type"] == "image" and eid not in taken]
+    """Split loose images into the logo, the hero, and secondary images.
+
+    An image whose asset is missing draws as a grey placeholder that shows no brand or product, so
+    it is always a secondary image, and the first content a crowded layout moves aside: as the logo
+    or the hero it grew to fill the column a real picture would have had."""
+    loose = [el for eid, el in elements.items() if el["type"] == "image" and eid not in taken]
+    images = [el for el in loose if probe.exists(el.get("asset_id", ""))]
+    blanks = [Unit(el["id"], "image", "image", (el["id"],), element_box(el), ROLE_PRIORITY["missing"])
+              for el in loose if not probe.exists(el.get("asset_id", ""))]
     if not images:
-        return []
+        return blanks
 
     def logo_score(el: dict[str, Any]) -> float:
         b = element_box(el)
@@ -375,7 +389,7 @@ def _image_units(
         kids = tuple(Unit(el["id"], role, "image", (el["id"],), element_box(el), ROLE_PRIORITY[role]) for el in members)
         box = union_all([k.box for k in kids])
         units.append(Unit(_fresh_key(f"set:{kids[0].id}", elements, issued), role, "image", tuple(k.id for k in kids), box, ROLE_PRIORITY[role], kids))
-    return units
+    return units + blanks
 
 
 # Smallest area ratio at which two pictures read as a matched pair rather than a hero and an inset.

@@ -8,8 +8,8 @@ from engine.core import decor
 from engine.core.finalize import backdrop_box
 from engine.core.sizing import (
     Ctx, Patches, Sized, StackResult, centre_separators, drawn_glyph_bounds, fill_alpha, fine_badge_floor,
-    fit_stack, has_word_spaces, image_frame, is_label_chip, size_image, size_label_chip, size_rigid, size_unit,
-    spaces_read, text_ink, unit_texts, visible_fraction,
+    fit_stack, has_word_spaces, image_frame, is_label_chip, is_placeholder, placeholder_height, size_image,
+    size_label_chip, size_rigid, size_unit, spaces_read, text_ink, unit_texts, visible_fraction,
 )
 from engine.core.types import Box, Candidate, Container, Unit, element_box, union_all
 
@@ -198,11 +198,19 @@ def _shift(patches: Patches, slots: dict[str, Box], dx: float) -> tuple[Patches,
 # =============================================================================
 
 
+def _parked(ctx: Ctx) -> list[Unit]:
+    """Units the stacks leave out and park once the copy is placed: stickers, and missing assets.
+
+    A missing asset's grey placeholder stacked with the copy took room the copy needed, and on Level 3
+    at 336x280 it pushed the badge row up over the logo."""
+    return [u for u in ctx.scene.units if u.role == "sticker" or is_placeholder(ctx, u)]
+
+
 def _stack(ctx: Ctx, align: str):
     """Everything in one vertical stack, in source reading order."""
-    units = [u for u in ctx.scene.units if u.role != "sticker"]
+    units = [u for u in ctx.scene.units if u not in _parked(ctx)]
     res, crowded = _fit_copy(ctx, units, content_rect(ctx), align, max_scale=scale_cap(ctx))
-    leftovers = list(res.dropped) + ctx.scene.units_by_role("sticker")
+    leftovers = list(res.dropped) + _parked(ctx)
     return res.patches, res.slots, leftovers, crowded
 
 
@@ -294,11 +302,12 @@ def _split(ctx: Ctx, media_side: str, plans: dict[str, tuple] | None = None):
     `plans` carries the arrangement one side found to the mirrored split, which tries it first:
     both fit the same column, and the search is the costliest step on crowded designs. Returns the
     patches, slots and leftovers, plus whether the plain split dropped copy."""
-    heroes = ctx.scene.units_by_role("hero") or ctx.scene.units_by_role("image")
+    # A design with secondary images but no hero has only missing assets, which make no product side.
+    heroes = ctx.scene.units_by_role("hero")
     if not heroes:
         return None
     hero = heroes[0]
-    text_units = [u for u in ctx.scene.units if u is not hero and u.role != "sticker"]
+    text_units = [u for u in ctx.scene.units if u is not hero and u not in _parked(ctx)]
     bucket = aspect_bucket(ctx.W, ctx.H)
     share = 0.42 if bucket in ("square", "landscape") else 0.3
     rect = content_rect(ctx)
@@ -518,7 +527,7 @@ def _split_at(
     text_patches, text_slots = _shift(res.patches, res.slots, text_dx)
     patches.update(text_patches)
     slots.update(text_slots)
-    leftovers = list(res.dropped) + ctx.scene.units_by_role("sticker")
+    leftovers = list(res.dropped) + _parked(ctx)
     return patches, slots, leftovers, res
 
 
@@ -593,7 +602,7 @@ def _columns(
         if band is not None:
             rect = Box(rect.x, rect.y, rect.w, band[1].y - rect.y - 2)
     logo = next(iter(scene.units_by_role("logo")), None)
-    hero = next(iter(scene.units_by_role("hero") or scene.units_by_role("image")), None) if with_hero else None
+    hero = next(iter(scene.units_by_role("hero")), None) if with_hero else None
     cta = next(iter(scene.units_by_role("cta")), None)
     text_roles = ("headline", "subhead") if compact else ("headline", "subhead", "body", "badge")
     link = cta if cta is not None and not compact and cta.kind == "text" else None
@@ -872,7 +881,7 @@ def _readable_columns(ctx: Ctx, with_hero: bool):
     gaps between columns close. The headline keeps to two lines and stays the clear lead throughout.
     """
     scene = ctx.scene
-    if not with_hero and not (scene.units_by_role("hero") or scene.units_by_role("image")):
+    if not with_hero and not scene.units_by_role("hero"):
         return None  # the same row as the variant with the hero
     # A logo share only matters with a logo.
     shares = (0.9, 0.6) if scene.units_by_role("logo") else (0.9,)
@@ -1287,8 +1296,8 @@ def _place_leftovers(
         if copy:
             copy_slots.append((rank[unit.id], placed[1]))
     for eid in ctx.scene.missing_ids:
-        # The Level 3 sample's note offers "skip it, placeholder it" for a missing asset; a grey
-        # placeholder box would read as broken, so skip it.
+        # Set aside only under the occlude policy; by default a missing asset is laid out and drawn
+        # as the renderer's grey placeholder, since every input element must stay visible.
         hide_unit(ctx, cand, Unit(eid, "missing", "image", (eid,), element_box(ctx.scene.elements[eid]), 11))
 
 
@@ -1523,10 +1532,14 @@ def _find_room(
     fonts = [float(ctx.scene.elements[m]["font_size"]) for m in unit.member_ids
              if ctx.scene.elements[m]["type"] == "text"]
     floor = ctx.min_font / min(fonts) if fonts else natural * 0.3
+    blank = is_placeholder(ctx, unit)
+    if blank:
+        # A placeholder keeps a visible size; with no free room at that size it takes the least overlap.
+        floor = max(floor, placeholder_height(unit) / max(unit.box.h, 1e-6))
     start = max(natural, floor)
     scales = [start * (floor / start) ** (i / 5) for i in range(6)] if start > floor else [start]
     # Last resort before overlapping content: fine print at half the readable size in free space.
-    scales.append(floor * 0.5)
+    scales.append(floor if blank else floor * 0.5)
     fine_print = max(5, ctx.min_font // 2)
     # Copy at a size that closes up its word spaces reads badly, but over other content it is not
     # read at all: free room with readable spaces first, then free room at any size, then the

@@ -140,7 +140,7 @@ def resize_with_report(
     # A strip's action column is one button tall, so a row of buttons would stack inside one unit
     # with no stack gap between them: at 320x50 the pair ran from the top edge to the bottom edge.
     strip = aspect_bucket(float(target["width"]), float(target["height"])) == "strip"
-    scene = understand(source, probe, button_rows=not strip)
+    scene = understand(source, probe, button_rows=not strip, hide_missing=policy == "occlude")
     ctx = Ctx(scene, float(target["width"]), float(target["height"]), measurer, probe)
     scored: list[tuple[dict[str, Any], str, Report]] = []
     start = time.monotonic()

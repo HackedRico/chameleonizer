@@ -44,11 +44,9 @@ def test_every_packed_layout_keeps_content_apart_and_visible(path):
         assert report.penalties.get("collision", 0.0) == 0, cand.strategy
         assert report.penalties.get("cut_off", 0.0) == 0, cand.strategy
         assert not structural(source, target, design), cand.strategy
-        # Only a missing asset may be tucked away; everything else keeps its layer and opacity.
-        assert cand.hidden <= set(scene.missing_ids), cand.strategy
+        # Nothing is tucked away, a missing asset included: every element keeps its layer and opacity.
+        assert not cand.hidden, cand.strategy
         for el in design["elements"]:
-            if el["id"] in scene.missing_ids:
-                continue
             src = by_id[el["id"]]
             assert el.get("z_index") == src.get("z_index"), (cand.strategy, el["id"])
             assert el.get("opacity", 1) == src.get("opacity", 1), (cand.strategy, el["id"])
