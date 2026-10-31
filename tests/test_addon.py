@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+from html.parser import HTMLParser
 from pathlib import Path
 
 import pytest
@@ -11,8 +12,9 @@ from PIL import Image
 # Module Overview
 # =============================================================================
 # Checks the viewer add-on in `addon/`: `manifest.json` against the manifest
-# version 2 rules Adobe's CLI applies to a developer add-on, and every render
-# that `renders/index.json` lists against the size the panel says it has.
+# version 2 rules Adobe's CLI applies to a developer add-on, how `index.html`
+# loads the UI SDK, and every render that `renders/index.json` lists against
+# the size the panel says it has.
 
 ADDON = Path(__file__).resolve().parents[1] / "addon"
 CATALOG = json.loads((ADDON / "renders" / "index.json").read_text())
@@ -44,6 +46,31 @@ def test_manifest_meets_adobe_v2_rules():
         assert set(ep) <= ENTRY_POINT_KEYS
         assert ep["type"] == "panel"
         assert (ADDON / ep["main"]).is_file()
+
+
+class _ModuleScripts(HTMLParser):
+    """Collect the `src` of every `<script type="module">` in document order."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.sources: list[str] = []
+
+    def handle_starttag(self, tag, attrs):
+        attributes = dict(attrs)
+        if tag == "script" and attributes.get("type") == "module" and attributes.get("src"):
+            self.sources.append(attributes["src"])
+
+
+def test_panel_loads_the_sdk_from_a_script_element_before_its_own_code():
+    # The SDK only listens for the host's `initPort` message, and the iframe load event that can
+    # send it waits for script elements but not for `import()`. In headless Chrome a host that
+    # posts `initPort` on load never connected to the panel while the SDK came only from `import()`.
+    parser = _ModuleScripts()
+    parser.feed((ADDON / "index.html").read_text())
+    sdk_url = re.search(r'^const SDK_URL = "([^"]+)";$', (ADDON / "index.js").read_text(), re.MULTILINE).group(1)
+    assert sdk_url == "https://new.express.adobe.com/static/add-on-sdk/sdk.js"
+    assert sdk_url in parser.sources, "index.html must load the SDK in a module script element"
+    assert parser.sources.index(sdk_url) < parser.sources.index("index.js")
 
 
 @pytest.mark.parametrize("sample", CATALOG["samples"], ids=lambda sample: sample["id"])

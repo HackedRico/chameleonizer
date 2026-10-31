@@ -6,8 +6,9 @@
 // listed in `renders/index.json`. `connectToExpress` loads the UI SDK lazily so
 // the previews work without it, and `addToPage` inserts a render with `addImage`.
 
-// Adobe's add-on reference loads the UI SDK from this URL in every example.
-const SDK_URL = "https://express.adobe.com/static/add-on-sdk/sdk.js";
+// Adobe's add-on reference loads the UI SDK from this URL in every example. `index.html` loads
+// the same URL in a script element, so the import below reuses that module instance.
+const SDK_URL = "https://new.express.adobe.com/static/add-on-sdk/sdk.js";
 // After this long without an answer from Express, say that the panel is still waiting.
 const SLOW_CONNECT_MS = 10000;
 // Outputs wider than this aspect ratio go below the source, because beside it they would be too small to read.
@@ -95,7 +96,9 @@ async function connectToExpress() {
     setStatus("Connecting to Adobe Express...");
     const slow = setTimeout(() => setStatus("Still waiting for Adobe Express..."), SLOW_CONNECT_MS);
     try {
-        // A dynamic import, unlike a static one, lets the previews run when the SDK cannot load.
+        // A dynamic import, unlike a static one, lets the previews run when the SDK cannot load. It
+        // resolves to the instance the script element in `index.html` started, which is already
+        // listening for the handshake.
         const { default: addOnUISdk } = await import(SDK_URL);
         await addOnUISdk.ready;
         setStatus("");

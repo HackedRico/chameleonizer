@@ -5,6 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Chameleonizer Viewer</title>
         <link rel="stylesheet" href="styles.css">
+        <!-- The SDK listens for the Express handshake as soon as it runs, and the iframe load
+             event that can trigger the handshake waits for script elements but not for import().
+             index.js imports this same URL and gets this instance, so the panel still shows the
+             previews when the SDK fails to load. -->
+        <script type="module" src="https://new.express.adobe.com/static/add-on-sdk/sdk.js"></script>
         <script type="module" src="index.js"></script>
     </head>
     <body>

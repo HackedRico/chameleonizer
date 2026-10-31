@@ -8,7 +8,7 @@ The panel has two pickers. **Sample** lists the three designs in `input/`. **For
 
 The panel does not run the engine. It shows PNGs stored in `renders/`, which `build_renders.py` made with the engine and the official renderer inside the scoring Docker image. `renders/index.json` lists them and records the engine version.
 
-The add-on has no build step and no dependencies. Express loads `manifest.json`, `index.html`, `index.js`, `styles.css`, and `renders/`. The panel requests nothing outside its own folder except the Express UI SDK, which every add-on imports from `express.adobe.com`. In a plain browser the panel skips that import, shows the previews, and keeps **Add to page** turned off.
+The add-on has no build step and no dependencies. Express loads `manifest.json`, `index.html`, `index.js`, `styles.css`, and `renders/`. The panel requests nothing outside its own folder except the Express UI SDK, which every add-on loads from `express.adobe.com`. `index.html` loads the SDK in a module script element, as Adobe's SDK reference shows, because the SDK has to be listening when Express sends its handshake. `index.js` then imports the same module, so the previews still work if the SDK fails to load. In a plain browser the panel shows the previews and keeps **Add to page** turned off.
 
 ## Load the add-on in Adobe Express
 
@@ -73,7 +73,7 @@ Known issue: the Level 3 render at 300x250, a size outside the benchmark, got wo
 
 ## What has been checked
 
-`tests/test_addon.py` checks `manifest.json` against the manifest version 2 rules that Adobe's CLI applies to a developer add-on, and checks that every render in `renders/index.json` exists at its listed size. It runs with the rest of `tests/`.
+`tests/test_addon.py` checks `manifest.json` against the manifest version 2 rules that Adobe's CLI applies to a developer add-on, checks that `index.html` loads the SDK in a script element before `index.js`, and checks that every render in `renders/index.json` exists at its listed size. It runs with the rest of `tests/`.
 
 These checks ran once, in a Chromium browser:
 
@@ -81,14 +81,18 @@ These checks ran once, in a Chromium browser:
 - Inside an iframe, the panel loads the SDK from `express.adobe.com`. When a content security policy blocks the SDK, the previews still load and the panel reports that **Add to page** is off.
 - With a stand-in for the SDK, **Add to page** passes `addImage` an `image/png` blob of the chosen render, and the panel shows the error text when `addImage` rejects.
 
-## What has not been verified
+These checks ran in headless Chrome 156 with the real `sdk.js`. A stand-in host page framed the panel cross-origin with `allow-scripts allow-same-origin`, sent the `initPort` message on the iframe load event, and answered the SDK with a stand-in for the Express API module:
 
-Nobody has loaded this add-on in Adobe Express yet. These parts are untested inside Express:
+- With the SDK loaded only by `import()`, the iframe load event fired before the SDK was listening, and the panel never connected. This is why `index.html` loads the SDK in a script element.
+- With the script element, the panel connected, also when the SDK response was held back for 3 seconds. It followed the host theme and a `themechange` event, and **Add to page** passed `addImage` the chosen render byte for byte.
+- With the SDK request blocked, the previews still loaded in a plain browser and in the frame.
+- In a plain browser at 320px, all 18 sample and format pairs showed the listed PNGs at their listed sizes, with no console errors and no horizontal scroll.
 
-- Express connecting to the add-on through the CLI dev server.
-- The SDK becoming ready after a dynamic `import()`. Adobe's examples use a static import. The panel uses a dynamic one so that the previews survive without the SDK.
-- `addImage` placing the render on the page. Adobe's reference does not say where Express puts the image or how it scales it.
-- The panel following the Express light and dark themes through `addOnUISdk.app.ui.theme` and the `themechange` event.
+## Verified in Adobe Express
+
+On 2026-10-30 we loaded the add-on in Adobe Express in a Chromium browser, through the CLI dev server as the steps above describe. The panel connected to Express, showed the source and engine previews for the chosen sample and format, and **Add to page** placed the Level 1 Instagram Portrait render on the open page. Chromium-based browsers need the **Apps on device** site permission for express.adobe.com before Express can reach the dev server on localhost.
+
+Still untested: the panel following the Express light and dark themes through `addOnUISdk.app.ui.theme` and the `themechange` event.
 
 ## Sources
 
