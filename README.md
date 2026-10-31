@@ -99,11 +99,4 @@ FAQ Q5 asks for a viewer add-on, which is required but not scored. `addon/` hold
 | `tests/` | Hard rules, robustness, opaque ids and malformed input |
 | `tools/`, `bench/suite/` | The benchmark, the judge, the packager, the README figures and the frozen 169 tasks, all outside the Docker image |
 | `addon/` | The viewer add-on |
-
-These docs go into more detail:
-
-- [`docs/benchmark.md`](/docs/benchmark.md) explains how we measured each change and gives the commands.
-- [`docs/leaderboard.md`](/docs/leaderboard.md) has results for every engine version.
-- [`docs/experiments.md`](/docs/experiments.md) logs every experiment we kept or dropped.
-- [`docs/research.md`](/docs/research.md) covers prior art and the evidence behind the architecture.
-- [`docs/agentic-harness.md`](/docs/agentic-harness.md) documents the optional model harness.
+| `docs/` | The benchmark method, results for every engine version, the experiment log, research notes and the harness design |
