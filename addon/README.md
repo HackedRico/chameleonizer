@@ -15,10 +15,11 @@ The add-on has no build step and no dependencies. Express loads `manifest.json`,
 Express loads a local add-on from the dev server in Adobe's add-on CLI. That server publishes an add-on listing at its root and serves the files under the manifest's `testId`. A plain static server does neither. These steps follow the CLI track of Adobe's Hello World guide, plus one copy step. You need Node.js 18 or later.
 
 1. Turn on add-on development in Express, once per account. Click your avatar, click the gear icon to open **Settings**, and turn on **Add-on Development**. Accept the Developer Terms of Use if Express asks.
-2. Create an add-on project from Adobe's no-build `javascript` template. If the CLI offers to set up an SSL certificate for `localhost`, accept.
+2. Create an add-on project from Adobe's no-build `javascript` template, then create a trusted SSL certificate for `localhost`. At the certificate prompt, choose **Automatically, set it up for me** and enter your Mac password when asked.
 
 	```bash
 	npx @adobe/create-ccweb-add-on chameleonizer-viewer --template javascript
+	npx @adobe/ccweb-add-on-ssl setup --hostname localhost
 	```
 
 3. From the repo root, copy the add-on into the project's `src/` folder. The copy replaces the template's `index.html`, `index.js`, and `manifest.json`.
@@ -42,7 +43,7 @@ Express loads a local add-on from the dev server in Adobe's add-on CLI. That ser
 7. In the **Connect to development server** dialog, select the checkbox and click **Connect**.
 8. Click **Chameleonizer Viewer** in the add-ons list.
 
-Chrome 142 and later asks whether Express may look for devices on your local network. Click **Allow**. If you click **Block**, Express cannot load a local add-on until you reset the permission, as Adobe's known issues page describes.
+Chrome 142 and later, and browsers built on it such as Arc, block Express from reaching `localhost` until the site has the **Apps on device** permission. If **Connect** reports that the development environment failed to load, open `chrome://settings/content/siteDetails?site=https%3A%2F%2Fexpress.adobe.com`, or `arc://` in Arc, set **Apps on device** to **Allow**, reload Express and connect again. The **Local network** permission alone is not enough.
 
 ## Preview the panel in a plain browser
 
