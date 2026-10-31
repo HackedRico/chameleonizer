@@ -1,0 +1,15 @@
+# Optional extras for the model harness (docs/agentic-harness.md). Never installed in the scoring
+# image: requirements.txt and the Dockerfile do not change, and the engine runs without these.
+#
+# Only the in-process backend (CHAMELEON_AGENT=llamacpp) needs a package, and only the tools accept it
+# (tools.bench --agent, tools.agree); engine.resize refuses it. The recommended HTTP backend
+# talks to llama-server, Ollama, LM Studio or mlx-vlm with the standard library alone.
+#
+# The repo's venv comes from `uv venv`, which has no pip.
+# macOS (Metal):
+#   CMAKE_ARGS="-DGGML_METAL=on" uv pip install --python .venv/bin/python -r requirements-agent.txt
+# linux/amd64 (Rosetta on the scorer has AVX2 but not AVX-512):
+#   CMAKE_ARGS="-DGGML_NATIVE=OFF -DGGML_AVX512=OFF" uv pip install --python .venv/bin/python -r requirements-agent.txt
+#
+# 0.3.36 ships llama_cpp.llama_chat_format.MTMDChatHandler, the harness's default chat handler.
+llama-cpp-python==0.3.36

@@ -1,0 +1,8 @@
+# BuildKit reads this file instead of the root .dockerignore for agent-bench.Dockerfile only. It is the
+# root list without `models/`: this dev-only image bakes in the local weights, the scoring image never does.
+.env
+.env.*
+.venv/
+output/
+.git/
+.claude/
