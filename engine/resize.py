@@ -6,70 +6,77 @@ the Dockerfile) is plumbing so you can focus on exactly one function:
 `resize()`. See RULES.md and the design schema for the full contract.
 """
 
+from __future__ import annotations
+
+import logging
+import os
+from functools import lru_cache
+from pathlib import Path
 from typing import Any
+
+from engine.adapters.stage_one import default_ports
+from engine.core.finalize import emergency_layout, fallback_layout
+from engine.core.pipeline import resize_design
+
+# =============================================================================
+# Module Overview
+# =============================================================================
+# Stage-one entry point the scorer calls. `resize` wires the engine core to
+# the brand-kit fonts and assets, and falls back to a letterboxed layout if
+# anything raises, because a crash scores nothing and a valid layout scores something.
+# An optional model harness (`docs/agentic-harness.md`) runs only when
+# `CHAMELEON_AGENT` names a backend; unset, nothing of it is even imported.
+
+logger = logging.getLogger(__name__)
+
+# Repo root, so brand-kit paths resolve the same under `python -m engine.main` and in Docker.
+_ROOT = Path(__file__).resolve().parents[1]
+# "none" keeps every element visible; "occlude" may hide low-priority units, pending organizer answer.
+_POLICY = os.environ.get("CHAMELEON_DROP_POLICY", "none")
+# Values of `CHAMELEON_AGENT` that leave the model harness off, as does leaving it unset.
+_AGENT_OFF = frozenset({"", "0", "off", "false", "no", "none"})
+
+
+@lru_cache(maxsize=1)
+def _ports():
+    return default_ports(_ROOT)
+
+
+@lru_cache(maxsize=1)
+def _agent():
+    """The configured model harness, or None (the default). Never raises."""
+    if os.environ.get("CHAMELEON_AGENT", "").strip().lower() in _AGENT_OFF:
+        return None  # nothing below is imported on the default path
+    try:
+        from engine.adapters.agent_config import load_agent_config
+        from engine.adapters.harness import build_harness
+
+        cfg = load_agent_config(os.environ)
+        if cfg is not None and cfg.backend == "llamacpp":
+            # Loading a model in this process has no deadline, and running out of memory would kill
+            # the scorer's process; the in-process backend is for tools only. Use `http`.
+            logger.warning("[resize] CHAMELEON_AGENT=llamacpp is for tools only; running without a model.")
+            return None
+        return build_harness(cfg, _ROOT) if cfg is not None else None
+    except Exception as exc:  # a broken optional helper must never cost the layout
+        logger.warning("[resize] Model harness unavailable; running without it. Reason: %r", exc)
+        return None
 
 
 def resize(source: dict[str, Any], target_canvas: dict[str, Any]) -> dict[str, Any]:
-    """
-    Args:
-        source: {"canvas": {"width": int, "height": int}, "elements": [...]}
-                 — the design at its original size. See
-                 chameleon_design_schema_v0.9.json for the full element spec
-                 (text / image / shape, position, size, rotation, opacity,
-                 z_index, group_id, and type-specific fields).
-        target_canvas: {"width": int, "height": int} — the shape you're
-                 resizing into.
+    """Return `source` re-laid-out for `target_canvas`, never raising."""
+    try:
+        measurer, probe = _ports()
+        harness = _agent()
+        if harness is None:
+            return resize_design(source, target_canvas, measurer, probe, _POLICY)
+        from engine.adapters.harness import agent_resize
 
-    Returns:
-        A design dict with the SAME shape as `source`:
-        {"canvas": target_canvas, "elements": [...]}
-
-        Hard requirements (see RULES.md for the full list):
-        - Every element `id` in `source` must appear exactly once in your
-          output. Do not add, remove, or invent elements.
-        - Do not regenerate or redraw any asset's pixel content — you are
-          repositioning and resizing the elements you were given, nothing
-          more. This is a disqualifying rule, not a style preference.
-        - Non-background image elements should be kept in proportion
-          (matching the source aspect ratio within ~5%) unless they are a
-          full-bleed / `fit: "cover"` element, which is expected to crop.
-        - `font_size` may change to help text fit. `font_family` and
-          `content` should not, for this stage of scoring (see RULES.md,
-          "Adaptive typography and copy").
-        - Nothing should end up outside `target_canvas`'s bounds.
-
-    This is where your actual approach goes: constraint solving, a learned
-    layout model, heuristics, whatever you choose. Latency is not a scoring
-    concern (see RULES.md) — spend your effort on quality, not speed.
-    """
-
-    # ------------------------------------------------------------------
-    # Naive baseline so this file runs out of the box. This is a uniform
-    # stretch — literally the thing the brief tells you NOT to do ("a
-    # naive program stretches the picture; a good one moves the
-    # furniture"). It's here so `python -m engine.main` produces valid,
-    # schema-correct output on day one. Replace the body of this function;
-    # do not just tune these three lines.
-    # ------------------------------------------------------------------
-    scale_x = target_canvas["width"] / source["canvas"]["width"]
-    scale_y = target_canvas["height"] / source["canvas"]["height"]
-
-    out_elements = []
-    for el in source["elements"]:
-        el = dict(el)  # shallow copy — don't mutate the input
-        el["x"] = el["x"] * scale_x
-        el["y"] = el["y"] * scale_y
-        el["width"] = el["width"] * scale_x
-        el["height"] = el["height"] * scale_y
-        if el["type"] == "text":
-            # font_size scaling isn't required to be uniform — this is
-            # just a starting point. Floored at 1px: the schema requires
-            # font_size >= 1, and an extreme downscale (e.g. a tall poster
-            # squeezed into a short banner) can otherwise compute < 1.
-            el["font_size"] = max(1.0, el["font_size"] * min(scale_x, scale_y))
-        out_elements.append(el)
-
-    return {
-        "canvas": {"width": target_canvas["width"], "height": target_canvas["height"]},
-        "elements": out_elements,
-    }
+        return agent_resize(source, target_canvas, measurer, probe, _POLICY, harness)[0]
+    except Exception as exc:  # integration boundary: any failure degrades to the letterbox
+        logger.warning("[resize] Engine failed; falling back to letterbox. Reason: %r", exc)
+        try:
+            return fallback_layout(source, target_canvas)
+        except Exception as exc2:  # malformed input can break the letterbox too; never raise
+            logger.warning("[resize] Letterbox failed too; using the emergency layout. Reason: %r", exc2)
+            return emergency_layout(source, target_canvas)
