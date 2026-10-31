@@ -101,3 +101,7 @@ FAQ Q5 asks for a viewer add-on, which is required but not scored. `addon/` hold
 | `tools/`, `bench/suite/` | The benchmark, the judge, the packager, the README figures and the frozen 169 tasks, all outside the Docker image |
 | `addon/` | The viewer add-on |
 | `docs/` | The benchmark method, results for every engine version, the experiment log, research notes and the harness design |
+
+## Team
+
+Team Chameleonizer, University of Maryland, College Park: [Ricky Chen](https://github.com/HackedRico), [Israel Ogwu](https://github.com/israelo19) and [Aprameya Kannan](https://github.com/aprameyak).
