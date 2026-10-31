@@ -1,0 +1,97 @@
+{
+  "task_id": "linkedin_banner_2",
+  "difficulty": "synthetic",
+  "notes": "1080x1920 to LinkedIn Banner",
+  "target_name": "LinkedIn Banner",
+  "source": {
+    "canvas": {
+      "width": 1080,
+      "height": 1920
+    },
+    "elements": [
+      {
+        "id": "e1",
+        "type": "image",
+        "x": 0,
+        "y": 0,
+        "width": 1080,
+        "height": 1920,
+        "z_index": 0,
+        "asset_id": "solstice_bg_gradient.png",
+        "fit": "cover"
+      },
+      {
+        "id": "e2",
+        "type": "shape",
+        "x": -106.8067835216672,
+        "y": 1061.2452694746364,
+        "width": 310.63044534801105,
+        "height": 310.63044534801105,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.08
+      },
+      {
+        "id": "e3",
+        "type": "image",
+        "x": 342.09340059652504,
+        "y": 64.8,
+        "width": 395.8131988069499,
+        "height": 395.8131988069499,
+        "z_index": 3,
+        "asset_id": "solstice_bottle.png",
+        "fit": "contain"
+      },
+      {
+        "id": "e4",
+        "type": "text",
+        "x": 86.4,
+        "y": 486.53319880694994,
+        "width": 907.1999999999999,
+        "height": 78.0,
+        "z_index": 5,
+        "content": "Chase the Light",
+        "font_family": "Solstice Serif",
+        "font_size": 65,
+        "font_weight": "bold",
+        "color": "rgba(255,255,255,1)",
+        "text_align": "center"
+      },
+      {
+        "id": "e5",
+        "type": "text",
+        "x": 86.4,
+        "y": 590.4531988069499,
+        "width": 907.1999999999999,
+        "height": 27.6,
+        "z_index": 5,
+        "content": "Botanical sparkling infusions, crafted for golden hour.",
+        "font_family": "Solstice Sans",
+        "font_size": 23,
+        "font_weight": "regular",
+        "color": "rgba(255,255,255,0.88)",
+        "text_align": "center"
+      },
+      {
+        "id": "e6",
+        "type": "text",
+        "x": 86.4,
+        "y": 650.4531988069499,
+        "width": 907.1999999999999,
+        "height": 36.0,
+        "z_index": 5,
+        "content": "Order Online",
+        "font_family": "Solstice Sans",
+        "font_size": 30,
+        "font_weight": "bold",
+        "color": "rgba(232,106,58,1)",
+        "text_align": "center"
+      }
+    ]
+  },
+  "target_canvas": {
+    "width": 1584,
+    "height": 396
+  }
+}

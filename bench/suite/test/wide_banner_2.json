@@ -1,0 +1,111 @@
+{
+  "task_id": "wide_banner_2",
+  "difficulty": "synthetic",
+  "notes": "1080x1350 to Wide Banner",
+  "target_name": "Wide Banner",
+  "source": {
+    "canvas": {
+      "width": 1080,
+      "height": 1350
+    },
+    "elements": [
+      {
+        "id": "e1",
+        "type": "image",
+        "x": 0,
+        "y": 0,
+        "width": 1080,
+        "height": 1350,
+        "z_index": 0,
+        "asset_id": "solstice_bg_gradient.png",
+        "fit": "cover"
+      },
+      {
+        "id": "e2",
+        "type": "shape",
+        "x": -35.30326854036276,
+        "y": 656.9208916774444,
+        "width": 351.8319104638299,
+        "height": 351.8319104638299,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.17
+      },
+      {
+        "id": "e3",
+        "type": "shape",
+        "x": 204.4893854724816,
+        "y": 1105.833421459097,
+        "width": 243.4386485254265,
+        "height": 243.4386485254265,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.09
+      },
+      {
+        "id": "e4",
+        "type": "shape",
+        "x": 943.6099383881099,
+        "y": 640.8225830863521,
+        "width": 295.33592436807163,
+        "height": 295.33592436807163,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.16
+      },
+      {
+        "id": "e5",
+        "type": "text",
+        "x": 86.4,
+        "y": 64.8,
+        "width": 907.1999999999999,
+        "height": 68.4,
+        "z_index": 5,
+        "content": "Golden Hour, Bottled",
+        "font_family": "Solstice Serif",
+        "font_size": 57,
+        "font_weight": "bold",
+        "color": "rgba(255,255,255,1)",
+        "text_align": "center"
+      },
+      {
+        "id": "e7",
+        "type": "shape",
+        "x": 734.4000000000001,
+        "y": 40.5,
+        "width": 302.40000000000003,
+        "height": 54.0,
+        "z_index": 6,
+        "shape_type": "rectangle",
+        "fill_color": "rgba(220,60,50,1)",
+        "corner_radius": 0,
+        "group_id": "e6",
+        "rotation": -12
+      },
+      {
+        "id": "e8",
+        "type": "text",
+        "x": 734.4000000000001,
+        "y": 56.1,
+        "width": 302.40000000000003,
+        "height": 22.8,
+        "z_index": 8,
+        "content": "20% OFF",
+        "font_family": "Solstice Sans",
+        "font_size": 19,
+        "font_weight": "bold",
+        "color": "rgba(255,255,255,1)",
+        "text_align": "center",
+        "group_id": "e6",
+        "rotation": -12
+      }
+    ]
+  },
+  "target_canvas": {
+    "width": 1600,
+    "height": 400
+  }
+}

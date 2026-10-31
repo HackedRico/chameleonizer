@@ -1,0 +1,127 @@
+{
+  "task_id": "x_header_0",
+  "difficulty": "synthetic",
+  "notes": "1080x1920 to X Header",
+  "target_name": "X Header",
+  "source": {
+    "canvas": {
+      "width": 1080,
+      "height": 1920
+    },
+    "elements": [
+      {
+        "id": "bg_1",
+        "type": "image",
+        "x": 0,
+        "y": 0,
+        "width": 1080,
+        "height": 1920,
+        "z_index": 0,
+        "asset_id": "solstice_bg_gradient.png",
+        "fit": "cover"
+      },
+      {
+        "id": "deco_2",
+        "type": "shape",
+        "x": 10.733794293498114,
+        "y": 1470.747505439597,
+        "width": 283.49538228638187,
+        "height": 283.49538228638187,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.09
+      },
+      {
+        "id": "deco_3",
+        "type": "shape",
+        "x": 415.8553520212464,
+        "y": 1583.915646389729,
+        "width": 275.86162245218657,
+        "height": 275.86162245218657,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.09
+      },
+      {
+        "id": "logo_4",
+        "type": "image",
+        "x": 388.79999999999995,
+        "y": 64.8,
+        "width": 302.40000000000003,
+        "height": 94.5,
+        "z_index": 4,
+        "asset_id": "solstice_logo_lockup.png",
+        "fit": "contain"
+      },
+      {
+        "id": "product_5",
+        "type": "image",
+        "x": 344.31985599843364,
+        "y": 198.18,
+        "width": 391.3602880031327,
+        "height": 391.3602880031327,
+        "z_index": 3,
+        "asset_id": "solstice_bottle.png",
+        "fit": "contain"
+      },
+      {
+        "id": "headline_6",
+        "type": "text",
+        "x": 86.4,
+        "y": 615.4602880031327,
+        "width": 907.1999999999999,
+        "height": 81.6,
+        "z_index": 5,
+        "content": "Taste the Sunset",
+        "font_family": "Solstice Serif",
+        "font_size": 68,
+        "font_weight": "bold",
+        "color": "rgba(255,255,255,1)",
+        "text_align": "center",
+        "style_runs": [
+          {
+            "start": 10,
+            "end": 16,
+            "color": "rgba(240,178,66,1)"
+          }
+        ]
+      },
+      {
+        "id": "cta_7",
+        "type": "text",
+        "x": 86.4,
+        "y": 722.9802880031327,
+        "width": 907.1999999999999,
+        "height": 36.0,
+        "z_index": 5,
+        "content": "Shop the Summer Line",
+        "font_family": "Solstice Sans",
+        "font_size": 30,
+        "font_weight": "bold",
+        "color": "rgba(232,106,58,1)",
+        "text_align": "center"
+      },
+      {
+        "id": "legal_8",
+        "type": "text",
+        "x": 64.8,
+        "y": 1822.8,
+        "width": 950.4,
+        "height": 14.4,
+        "z_index": 6,
+        "content": "Please drink responsibly. Botanical Sparkling Co., 2026. Void where prohibited. See solstice.com/terms for full details.",
+        "font_family": "Solstice Sans",
+        "font_size": 12,
+        "font_weight": "regular",
+        "color": "rgba(255,255,255,0.6)",
+        "text_align": "center"
+      }
+    ]
+  },
+  "target_canvas": {
+    "width": 1500,
+    "height": 500
+  }
+}

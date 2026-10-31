@@ -1,0 +1,168 @@
+{
+  "task_id": "youtube_thumbnail_0",
+  "difficulty": "synthetic",
+  "notes": "1080x1350 to YouTube Thumbnail",
+  "target_name": "YouTube Thumbnail",
+  "source": {
+    "canvas": {
+      "width": 1080,
+      "height": 1350
+    },
+    "elements": [
+      {
+        "id": "bg_1",
+        "type": "image",
+        "x": 0,
+        "y": 0,
+        "width": 1080,
+        "height": 1350,
+        "z_index": 0,
+        "asset_id": "solstice_bg_gradient.png",
+        "fit": "cover"
+      },
+      {
+        "id": "deco_2",
+        "type": "shape",
+        "x": -56.416959023160004,
+        "y": 496.8872798640988,
+        "width": 184.92535822608426,
+        "height": 184.92535822608426,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.14
+      },
+      {
+        "id": "deco_3",
+        "type": "shape",
+        "x": 572.2985872255301,
+        "y": 974.2237297525065,
+        "width": 271.9086688895086,
+        "height": 271.9086688895086,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.1
+      },
+      {
+        "id": "deco_4",
+        "type": "shape",
+        "x": 733.4120305675392,
+        "y": 986.8319067755243,
+        "width": 215.45488049126936,
+        "height": 215.45488049126936,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.09
+      },
+      {
+        "id": "logo_5",
+        "type": "image",
+        "x": 388.79999999999995,
+        "y": 64.8,
+        "width": 302.40000000000003,
+        "height": 94.5,
+        "z_index": 4,
+        "asset_id": "solstice_logo_lockup.png",
+        "fit": "contain"
+      },
+      {
+        "id": "product_6",
+        "type": "image",
+        "x": 351.06223334423504,
+        "y": 198.18,
+        "width": 377.8755333115299,
+        "height": 377.8755333115299,
+        "z_index": 3,
+        "asset_id": "solstice_bottle.png",
+        "fit": "contain"
+      },
+      {
+        "id": "headline_7",
+        "type": "text",
+        "x": 86.4,
+        "y": 601.97553331153,
+        "width": 907.1999999999999,
+        "height": 73.2,
+        "z_index": 5,
+        "content": "Chase the Light",
+        "font_family": "Solstice Serif",
+        "font_size": 61,
+        "font_weight": "bold",
+        "color": "rgba(255,255,255,1)",
+        "text_align": "center",
+        "style_runs": [
+          {
+            "start": 10,
+            "end": 15,
+            "color": "rgba(240,178,66,1)"
+          }
+        ]
+      },
+      {
+        "id": "subhead_8",
+        "type": "text",
+        "x": 86.4,
+        "y": 701.09553331153,
+        "width": 907.1999999999999,
+        "height": 30.0,
+        "z_index": 5,
+        "content": "Small batch. Low sugar. All flavor.",
+        "font_family": "Solstice Sans",
+        "font_size": 25,
+        "font_weight": "regular",
+        "color": "rgba(255,255,255,0.88)",
+        "text_align": "center"
+      },
+      {
+        "id": "cta_bg_10",
+        "type": "shape",
+        "x": 334.79999999999995,
+        "y": 763.4955333115299,
+        "width": 410.4,
+        "height": 86.4,
+        "z_index": 3,
+        "shape_type": "rectangle",
+        "fill_color": "rgba(232,106,58,1)",
+        "corner_radius": 43.2,
+        "group_id": "cta_group_9"
+      },
+      {
+        "id": "cta_label_11",
+        "type": "text",
+        "x": 334.79999999999995,
+        "y": 793.4955333115299,
+        "width": 410.4,
+        "height": 26.4,
+        "z_index": 5,
+        "content": "Discover the Collection",
+        "font_family": "Solstice Sans",
+        "font_size": 22,
+        "font_weight": "bold",
+        "color": "rgba(255,255,255,1)",
+        "text_align": "center",
+        "group_id": "cta_group_9"
+      },
+      {
+        "id": "legal_12",
+        "type": "text",
+        "x": 64.8,
+        "y": 1252.8,
+        "width": 950.4,
+        "height": 14.4,
+        "z_index": 6,
+        "content": "Offer valid while supplies last. Terms apply.",
+        "font_family": "Solstice Sans",
+        "font_size": 12,
+        "font_weight": "regular",
+        "color": "rgba(255,255,255,0.6)",
+        "text_align": "center"
+      }
+    ]
+  },
+  "target_canvas": {
+    "width": 1280,
+    "height": 720
+  }
+}

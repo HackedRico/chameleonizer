@@ -1,0 +1,105 @@
+{
+  "task_id": "linkedin_post_2",
+  "difficulty": "synthetic",
+  "notes": "1080x1350 to LinkedIn Post",
+  "target_name": "LinkedIn Post",
+  "source": {
+    "canvas": {
+      "width": 1080,
+      "height": 1350
+    },
+    "elements": [
+      {
+        "id": "bg_1",
+        "type": "image",
+        "x": 0,
+        "y": 0,
+        "width": 1080,
+        "height": 1350,
+        "z_index": 0,
+        "asset_id": "solstice_bg_gradient.png",
+        "fit": "cover"
+      },
+      {
+        "id": "deco_2",
+        "type": "shape",
+        "x": 816.5484758931119,
+        "y": 231.0288717078443,
+        "width": 436.2952246356519,
+        "height": 436.2952246356519,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.17
+      },
+      {
+        "id": "deco_3",
+        "type": "shape",
+        "x": 962.6762898575261,
+        "y": 876.4866787419052,
+        "width": 229.01913213651093,
+        "height": 229.01913213651093,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.17
+      },
+      {
+        "id": "logo_4",
+        "type": "image",
+        "x": 388.79999999999995,
+        "y": 64.8,
+        "width": 302.40000000000003,
+        "height": 94.5,
+        "z_index": 4,
+        "asset_id": "solstice_logo_lockup.png",
+        "fit": "contain"
+      },
+      {
+        "id": "product_5",
+        "type": "image",
+        "x": 360.8158136993619,
+        "y": 198.18,
+        "width": 358.3683726012761,
+        "height": 358.3683726012761,
+        "z_index": 3,
+        "asset_id": "solstice_bottle.png",
+        "fit": "contain"
+      },
+      {
+        "id": "headline_6",
+        "type": "text",
+        "x": 86.4,
+        "y": 582.4683726012761,
+        "width": 907.1999999999999,
+        "height": 194.4,
+        "z_index": 5,
+        "content": "The Brightest Flavor of the Season Is Finally Here, for a Limited Time Only",
+        "font_family": "Solstice Serif",
+        "font_size": 54,
+        "font_weight": "bold",
+        "color": "rgba(255,255,255,1)",
+        "text_align": "center"
+      },
+      {
+        "id": "subhead_7",
+        "type": "text",
+        "x": 86.4,
+        "y": 802.788372601276,
+        "width": 907.1999999999999,
+        "height": 90.0,
+        "z_index": 5,
+        "content": "Wild honey, blood orange zest and a whisper of smoked rosemary, bottled at the peak of golden hour for a taste that lingers long after sunset.",
+        "font_family": "Solstice Sans",
+        "font_size": 25,
+        "font_weight": "regular",
+        "color": "rgba(255,255,255,0.88)",
+        "text_align": "center"
+      }
+    ]
+  },
+  "target_canvas": {
+    "width": 1200,
+    "height": 627
+  }
+}

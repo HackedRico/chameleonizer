@@ -1,0 +1,131 @@
+{
+  "task_id": "linkedin_post_1",
+  "difficulty": "synthetic",
+  "notes": "1080x1920 to LinkedIn Post",
+  "target_name": "LinkedIn Post",
+  "source": {
+    "canvas": {
+      "width": 1080,
+      "height": 1920
+    },
+    "elements": [
+      {
+        "id": "bg_1",
+        "type": "image",
+        "x": 0,
+        "y": 0,
+        "width": 1080,
+        "height": 1920,
+        "z_index": 0,
+        "asset_id": "solstice_bg_gradient.png",
+        "fit": "cover"
+      },
+      {
+        "id": "deco_2",
+        "type": "shape",
+        "x": 646.2634147381208,
+        "y": -35.09071974860822,
+        "width": 333.4795532876644,
+        "height": 333.4795532876644,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.12
+      },
+      {
+        "id": "deco_3",
+        "type": "shape",
+        "x": 386.95686159284986,
+        "y": 654.5298432183774,
+        "width": 375.91238340940356,
+        "height": 375.91238340940356,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.09
+      },
+      {
+        "id": "deco_4",
+        "type": "shape",
+        "x": 956.4494551576861,
+        "y": 175.54404327551242,
+        "width": 235.82569258094338,
+        "height": 235.82569258094338,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.13
+      },
+      {
+        "id": "logo_5",
+        "type": "image",
+        "x": 388.79999999999995,
+        "y": 64.8,
+        "width": 302.40000000000003,
+        "height": 94.5,
+        "z_index": 4,
+        "asset_id": "solstice_logo_lockup.png",
+        "fit": "contain"
+      },
+      {
+        "id": "product_6",
+        "type": "image",
+        "x": 311.74729034910524,
+        "y": 198.18,
+        "width": 456.5054193017895,
+        "height": 456.5054193017895,
+        "z_index": 3,
+        "asset_id": "solstice_bottle.png",
+        "fit": "contain"
+      },
+      {
+        "id": "headline_7",
+        "type": "text",
+        "x": 86.4,
+        "y": 680.6054193017895,
+        "width": 907.1999999999999,
+        "height": 79.2,
+        "z_index": 5,
+        "content": "Chase the Light",
+        "font_family": "Solstice Serif",
+        "font_size": 66,
+        "font_weight": "bold",
+        "color": "rgba(255,255,255,1)",
+        "text_align": "center"
+      },
+      {
+        "id": "cta_bg_9",
+        "type": "shape",
+        "x": 334.79999999999995,
+        "y": 785.7254193017895,
+        "width": 410.4,
+        "height": 86.4,
+        "z_index": 3,
+        "shape_type": "rectangle",
+        "fill_color": "rgba(232,106,58,1)",
+        "corner_radius": 43.2,
+        "group_id": "cta_group_8"
+      },
+      {
+        "id": "cta_label_10",
+        "type": "text",
+        "x": 334.79999999999995,
+        "y": 815.7254193017895,
+        "width": 410.4,
+        "height": 26.4,
+        "z_index": 5,
+        "content": "Shop Now",
+        "font_family": "Solstice Sans",
+        "font_size": 22,
+        "font_weight": "bold",
+        "color": "rgba(255,255,255,1)",
+        "text_align": "center",
+        "group_id": "cta_group_8"
+      }
+    ]
+  },
+  "target_canvas": {
+    "width": 1200,
+    "height": 627
+  }
+}

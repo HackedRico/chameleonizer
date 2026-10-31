@@ -1,0 +1,150 @@
+{
+  "task_id": "wide_skyscraper_2",
+  "difficulty": "synthetic",
+  "notes": "1080x1350 to Wide Skyscraper",
+  "target_name": "Wide Skyscraper",
+  "source": {
+    "canvas": {
+      "width": 1080,
+      "height": 1350
+    },
+    "elements": [
+      {
+        "id": "e1",
+        "type": "image",
+        "x": 0,
+        "y": 0,
+        "width": 1080,
+        "height": 1350,
+        "z_index": 0,
+        "asset_id": "solstice_bg_gradient.png",
+        "fit": "cover"
+      },
+      {
+        "id": "e2",
+        "type": "shape",
+        "x": 327.5872645094977,
+        "y": 62.931377850188255,
+        "width": 316.57138571681924,
+        "height": 316.57138571681924,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.14
+      },
+      {
+        "id": "e3",
+        "type": "shape",
+        "x": 608.7850302561187,
+        "y": 191.25839604139438,
+        "width": 329.5390098014679,
+        "height": 329.5390098014679,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.1
+      },
+      {
+        "id": "e4",
+        "type": "shape",
+        "x": 525.6014796132184,
+        "y": 432.49121960085273,
+        "width": 325.83213404052236,
+        "height": 325.83213404052236,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.16
+      },
+      {
+        "id": "e5",
+        "type": "image",
+        "x": 388.79999999999995,
+        "y": 64.8,
+        "width": 302.40000000000003,
+        "height": 94.5,
+        "z_index": 4,
+        "asset_id": "solstice_logo_lockup.png",
+        "fit": "contain"
+      },
+      {
+        "id": "e6",
+        "type": "image",
+        "x": 298.48271340948554,
+        "y": 198.18,
+        "width": 483.0345731810289,
+        "height": 483.0345731810289,
+        "z_index": 3,
+        "asset_id": "solstice_bottle.png",
+        "fit": "contain"
+      },
+      {
+        "id": "e7",
+        "type": "text",
+        "x": 86.4,
+        "y": 707.1345731810289,
+        "width": 907.1999999999999,
+        "height": 63.6,
+        "z_index": 5,
+        "content": "Sip Something Brighter",
+        "font_family": "Solstice Serif",
+        "font_size": 53,
+        "font_weight": "bold",
+        "color": "rgba(255,255,255,1)",
+        "text_align": "center",
+        "style_runs": [
+          {
+            "start": 14,
+            "end": 22,
+            "color": "rgba(240,178,66,1)"
+          }
+        ]
+      },
+      {
+        "id": "e8",
+        "type": "text",
+        "x": 86.4,
+        "y": 796.6545731810289,
+        "width": 907.1999999999999,
+        "height": 36.0,
+        "z_index": 5,
+        "content": "Shop the Summer Line",
+        "font_family": "Solstice Sans",
+        "font_size": 30,
+        "font_weight": "bold",
+        "color": "rgba(232,106,58,1)",
+        "text_align": "center"
+      },
+      {
+        "id": "e9",
+        "type": "text",
+        "x": 64.8,
+        "y": 1252.8,
+        "width": 950.4,
+        "height": 14.4,
+        "z_index": 6,
+        "content": "Please drink responsibly. Botanical Sparkling Co., 2026. Void where prohibited. See solstice.com/terms for full details.",
+        "font_family": "Solstice Sans",
+        "font_size": 12,
+        "font_weight": "regular",
+        "color": "rgba(255,255,255,0.6)",
+        "text_align": "center"
+      },
+      {
+        "id": "e10",
+        "type": "image",
+        "x": 842.4,
+        "y": 1188.0,
+        "width": 172.8,
+        "height": 75.60000000000001,
+        "z_index": 2,
+        "asset_id": "solstice_holiday_badge_2025.png",
+        "fit": "contain"
+      }
+    ]
+  },
+  "target_canvas": {
+    "width": 160,
+    "height": 600
+  }
+}

@@ -1,0 +1,139 @@
+{
+ "task_id": "photo_band__leaderboard",
+ "difficulty": "probe",
+ "notes": "photo_band 1080x1350 to Leaderboard",
+ "target_name": "Leaderboard",
+ "source": {
+  "canvas": {
+   "width": 1080,
+   "height": 1350
+  },
+  "elements": [
+   {
+    "id": "e1",
+    "type": "image",
+    "x": 0,
+    "y": 0,
+    "width": 1080,
+    "height": 1350,
+    "z_index": 0,
+    "asset_id": "solstice_bg_gradient.png",
+    "fit": "cover"
+   },
+   {
+    "id": "e2",
+    "type": "shape",
+    "x": 190,
+    "y": 130,
+    "width": 700,
+    "height": 700,
+    "z_index": 1,
+    "shape_type": "ellipse",
+    "fill_color": "rgba(240,178,66,1)",
+    "opacity": 0.16
+   },
+   {
+    "id": "e3",
+    "type": "image",
+    "x": 0,
+    "y": 0,
+    "width": 1080,
+    "height": 945,
+    "z_index": 2,
+    "asset_id": "solstice_bottle.png",
+    "fit": "cover"
+   },
+   {
+    "id": "e4",
+    "type": "shape",
+    "x": 0,
+    "y": 945,
+    "width": 1080,
+    "height": 405,
+    "z_index": 3,
+    "shape_type": "rectangle",
+    "fill_color": "rgba(30,18,34,1)"
+   },
+   {
+    "id": "e5",
+    "type": "image",
+    "x": 9,
+    "y": 40,
+    "width": 240,
+    "height": 80,
+    "z_index": 5,
+    "asset_id": "solstice_logo_lockup.png",
+    "fit": "contain"
+   },
+   {
+    "id": "e6",
+    "type": "text",
+    "x": 80,
+    "y": 1018,
+    "width": 920,
+    "height": 77,
+    "z_index": 5,
+    "content": "Bottled Golden Hour",
+    "font_family": "Solstice Serif",
+    "font_size": 64,
+    "font_weight": "bold",
+    "color": "rgba(255,255,255,1)",
+    "text_align": "left",
+    "style_runs": [
+     {
+      "start": 8,
+      "end": 19,
+      "color": "rgba(240,178,66,1)"
+     }
+    ]
+   },
+   {
+    "id": "e7",
+    "type": "text",
+    "x": 80,
+    "y": 1111,
+    "width": 920,
+    "height": 34,
+    "z_index": 5,
+    "content": "Botanical sparkling infusions, chilled and ready.",
+    "font_family": "Solstice Sans",
+    "font_size": 28,
+    "color": "rgba(255,255,255,0.85)",
+    "text_align": "left"
+   },
+   {
+    "id": "e8",
+    "type": "shape",
+    "x": 80,
+    "y": 1189,
+    "width": 260,
+    "height": 76,
+    "z_index": 4,
+    "shape_type": "rectangle",
+    "fill_color": "rgba(232,106,58,1)",
+    "corner_radius": 38,
+    "group_id": "g1"
+   },
+   {
+    "id": "e9",
+    "type": "text",
+    "x": 80,
+    "y": 1212,
+    "width": 260,
+    "height": 29,
+    "z_index": 5,
+    "content": "Shop Now",
+    "font_family": "Solstice Sans",
+    "font_size": 24,
+    "font_weight": "bold",
+    "color": "rgba(255,255,255,1)",
+    "text_align": "center",
+    "group_id": "g1"
+   }
+  ]
+ },
+ "target_canvas": {
+  "width": 728,
+  "height": 90
+ }
+}

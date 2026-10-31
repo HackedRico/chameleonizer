@@ -1,0 +1,150 @@
+{
+  "task_id": "facebook_post_1",
+  "difficulty": "synthetic",
+  "notes": "1080x1350 to Facebook Post",
+  "target_name": "Facebook Post",
+  "source": {
+    "canvas": {
+      "width": 1080,
+      "height": 1350
+    },
+    "elements": [
+      {
+        "id": "e1",
+        "type": "image",
+        "x": 0,
+        "y": 0,
+        "width": 1080,
+        "height": 1350,
+        "z_index": 0,
+        "asset_id": "solstice_bg_gradient.png",
+        "fit": "cover"
+      },
+      {
+        "id": "e2",
+        "type": "shape",
+        "x": 539.5636613525116,
+        "y": 209.50343274778072,
+        "width": 410.86598794118237,
+        "height": 410.86598794118237,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.1
+      },
+      {
+        "id": "e3",
+        "type": "shape",
+        "x": 380.4220393728847,
+        "y": 828.1972025044537,
+        "width": 469.4819091071504,
+        "height": 469.4819091071504,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.17
+      },
+      {
+        "id": "e4",
+        "type": "shape",
+        "x": 539.2115063941508,
+        "y": 1133.9495967754076,
+        "width": 469.38847922331627,
+        "height": 469.38847922331627,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.14
+      },
+      {
+        "id": "e5",
+        "type": "image",
+        "x": 388.79999999999995,
+        "y": 64.8,
+        "width": 302.40000000000003,
+        "height": 94.5,
+        "z_index": 4,
+        "asset_id": "solstice_logo_lockup.png",
+        "fit": "contain"
+      },
+      {
+        "id": "e6",
+        "type": "text",
+        "x": 86.4,
+        "y": 198.18,
+        "width": 907.1999999999999,
+        "height": 63.6,
+        "z_index": 5,
+        "content": "New: Blood Orange and Rosemary",
+        "font_family": "Solstice Serif",
+        "font_size": 53,
+        "font_weight": "bold",
+        "color": "rgba(255,255,255,1)",
+        "text_align": "center"
+      },
+      {
+        "id": "e8",
+        "type": "shape",
+        "x": 86.4,
+        "y": 287.70000000000005,
+        "width": 885.5999999999999,
+        "height": 48.6,
+        "z_index": 3,
+        "shape_type": "rectangle",
+        "fill_color": "rgba(232,106,58,1)",
+        "corner_radius": 24.3,
+        "group_id": "e7"
+      },
+      {
+        "id": "e9",
+        "type": "text",
+        "x": 86.4,
+        "y": 303.00000000000006,
+        "width": 885.5999999999999,
+        "height": 18.0,
+        "z_index": 5,
+        "content": "VEGAN",
+        "font_family": "Solstice Sans",
+        "font_size": 15,
+        "font_weight": "bold",
+        "color": "rgba(255,255,255,1)",
+        "text_align": "center",
+        "group_id": "e7"
+      },
+      {
+        "id": "e10",
+        "type": "text",
+        "x": 86.4,
+        "y": 368.70000000000005,
+        "width": 907.1999999999999,
+        "height": 36.0,
+        "z_index": 5,
+        "content": "Shop the Summer Line",
+        "font_family": "Solstice Sans",
+        "font_size": 30,
+        "font_weight": "bold",
+        "color": "rgba(232,106,58,1)",
+        "text_align": "center"
+      },
+      {
+        "id": "e11",
+        "type": "text",
+        "x": 64.8,
+        "y": 1252.8,
+        "width": 950.4,
+        "height": 14.4,
+        "z_index": 6,
+        "content": "Please drink responsibly. Botanical Sparkling Co., 2026. Void where prohibited. See solstice.com/terms for full details.",
+        "font_family": "Solstice Sans",
+        "font_size": 12,
+        "font_weight": "regular",
+        "color": "rgba(255,255,255,0.6)",
+        "text_align": "center"
+      }
+    ]
+  },
+  "target_canvas": {
+    "width": 1200,
+    "height": 630
+  }
+}

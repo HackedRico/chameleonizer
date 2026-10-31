@@ -1,0 +1,153 @@
+{
+ "task_id": "card_panel__wide_skyscraper",
+ "difficulty": "probe",
+ "notes": "card_panel 1080x1350 to Wide Skyscraper",
+ "target_name": "Wide Skyscraper",
+ "source": {
+  "canvas": {
+   "width": 1080,
+   "height": 1350
+  },
+  "elements": [
+   {
+    "id": "e1",
+    "type": "image",
+    "x": 0,
+    "y": 0,
+    "width": 1080,
+    "height": 1350,
+    "z_index": 0,
+    "asset_id": "solstice_bg_gradient.png",
+    "fit": "cover"
+   },
+   {
+    "id": "e2",
+    "type": "shape",
+    "x": 200,
+    "y": 120,
+    "width": 680,
+    "height": 680,
+    "z_index": 1,
+    "shape_type": "ellipse",
+    "fill_color": "rgba(255,255,255,1)",
+    "opacity": 0.14
+   },
+   {
+    "id": "e3",
+    "type": "shape",
+    "x": -140,
+    "y": -120,
+    "width": 420,
+    "height": 420,
+    "z_index": 1,
+    "shape_type": "ellipse",
+    "fill_color": "rgba(255,255,255,1)",
+    "opacity": 0.08
+   },
+   {
+    "id": "e4",
+    "type": "shape",
+    "x": 80,
+    "y": 500,
+    "width": 920,
+    "height": 780,
+    "z_index": 2,
+    "shape_type": "rectangle",
+    "fill_color": "rgba(84,46,80,1)",
+    "corner_radius": 48
+   },
+   {
+    "id": "e5",
+    "type": "image",
+    "x": 190,
+    "y": 145,
+    "width": 700,
+    "height": 700,
+    "z_index": 4,
+    "asset_id": "solstice_bottle.png",
+    "fit": "contain"
+   },
+   {
+    "id": "e6",
+    "type": "image",
+    "x": 405,
+    "y": 781,
+    "width": 270,
+    "height": 90,
+    "z_index": 5,
+    "asset_id": "solstice_logo_lockup.png",
+    "fit": "contain"
+   },
+   {
+    "id": "e7",
+    "type": "text",
+    "x": 140,
+    "y": 899,
+    "width": 800,
+    "height": 91,
+    "z_index": 5,
+    "content": "Chase the Light",
+    "font_family": "Solstice Serif",
+    "font_size": 76,
+    "font_weight": "bold",
+    "color": "rgba(255,255,255,1)",
+    "text_align": "center",
+    "style_runs": [
+     {
+      "start": 6,
+      "end": 15,
+      "color": "rgba(240,178,66,1)"
+     }
+    ]
+   },
+   {
+    "id": "e8",
+    "type": "text",
+    "x": 210,
+    "y": 1008,
+    "width": 660,
+    "height": 73,
+    "z_index": 5,
+    "content": "Botanical sparkling infusions with blood orange and wild honey, crafted for golden hour.",
+    "font_family": "Solstice Sans",
+    "font_size": 26,
+    "color": "rgba(255,255,255,0.85)",
+    "text_align": "center",
+    "line_height": 1.4
+   },
+   {
+    "id": "e9",
+    "type": "shape",
+    "x": 350,
+    "y": 1125,
+    "width": 380,
+    "height": 88,
+    "z_index": 4,
+    "shape_type": "rectangle",
+    "fill_color": "rgba(232,106,58,1)",
+    "corner_radius": 44,
+    "group_id": "g1"
+   },
+   {
+    "id": "e10",
+    "type": "text",
+    "x": 350,
+    "y": 1151,
+    "width": 380,
+    "height": 31,
+    "z_index": 5,
+    "content": "Shop the Collection",
+    "font_family": "Solstice Sans",
+    "font_size": 26,
+    "font_weight": "bold",
+    "color": "rgba(255,255,255,1)",
+    "text_align": "center",
+    "group_id": "g1"
+   }
+  ]
+ },
+ "target_canvas": {
+  "width": 160,
+  "height": 600
+ }
+}

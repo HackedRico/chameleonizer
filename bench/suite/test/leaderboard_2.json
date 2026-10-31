@@ -1,0 +1,112 @@
+{
+  "task_id": "leaderboard_2",
+  "difficulty": "synthetic",
+  "notes": "1200x628 to Leaderboard",
+  "target_name": "Leaderboard",
+  "source": {
+    "canvas": {
+      "width": 1200,
+      "height": 628
+    },
+    "elements": [
+      {
+        "id": "bg_1",
+        "type": "image",
+        "x": 0,
+        "y": 0,
+        "width": 1200,
+        "height": 628,
+        "z_index": 0,
+        "asset_id": "solstice_bg_gradient.png",
+        "fit": "cover"
+      },
+      {
+        "id": "deco_2",
+        "type": "shape",
+        "x": 441.79999872823623,
+        "y": 111.12366092142953,
+        "width": 348.5701061507083,
+        "height": 348.5701061507083,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.11
+      },
+      {
+        "id": "deco_3",
+        "type": "shape",
+        "x": 978.3680770790937,
+        "y": 560.6971040130293,
+        "width": 497.2623280822975,
+        "height": 497.2623280822975,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.11
+      },
+      {
+        "id": "headline_4",
+        "type": "text",
+        "x": 576.0,
+        "y": 37.68,
+        "width": 552.0,
+        "height": 127.2,
+        "z_index": 5,
+        "content": "Sip Something Brighter",
+        "font_family": "Solstice Serif",
+        "font_size": 53,
+        "font_weight": "bold",
+        "color": "rgba(255,255,255,1)",
+        "text_align": "center"
+      },
+      {
+        "id": "cta_bg_6",
+        "type": "shape",
+        "x": 669.6,
+        "y": 179.952,
+        "width": 364.8,
+        "height": 76.80000000000001,
+        "z_index": 3,
+        "shape_type": "rectangle",
+        "fill_color": "rgba(232,106,58,1)",
+        "corner_radius": 38.400000000000006,
+        "group_id": "cta_group_5"
+      },
+      {
+        "id": "cta_label_7",
+        "type": "text",
+        "x": 669.6,
+        "y": 206.352,
+        "width": 364.8,
+        "height": 24.0,
+        "z_index": 5,
+        "content": "Get Yours Today",
+        "font_family": "Solstice Sans",
+        "font_size": 20,
+        "font_weight": "bold",
+        "color": "rgba(255,255,255,1)",
+        "text_align": "center",
+        "group_id": "cta_group_5"
+      },
+      {
+        "id": "legal_8",
+        "type": "text",
+        "x": 72.0,
+        "y": 554.32,
+        "width": 1056.0,
+        "height": 15.6,
+        "z_index": 6,
+        "content": "Offer valid while supplies last. Terms apply.",
+        "font_family": "Solstice Sans",
+        "font_size": 13,
+        "font_weight": "regular",
+        "color": "rgba(255,255,255,0.6)",
+        "text_align": "center"
+      }
+    ]
+  },
+  "target_canvas": {
+    "width": 728,
+    "height": 90
+  }
+}

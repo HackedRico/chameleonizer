@@ -1,0 +1,172 @@
+{
+ "task_id": "two_ctas__half_page",
+ "difficulty": "probe",
+ "notes": "two_ctas 1200x628 to Half Page",
+ "target_name": "Half Page",
+ "source": {
+  "canvas": {
+   "width": 1200,
+   "height": 628
+  },
+  "elements": [
+   {
+    "id": "e1",
+    "type": "image",
+    "x": 0,
+    "y": 0,
+    "width": 1200,
+    "height": 628,
+    "z_index": 0,
+    "asset_id": "solstice_bg_gradient.png",
+    "fit": "cover"
+   },
+   {
+    "id": "e2",
+    "type": "shape",
+    "x": 640,
+    "y": -10,
+    "width": 620,
+    "height": 620,
+    "z_index": 1,
+    "shape_type": "ellipse",
+    "fill_color": "rgba(255,255,255,1)",
+    "opacity": 0.12
+   },
+   {
+    "id": "e3",
+    "type": "shape",
+    "x": -90,
+    "y": 480,
+    "width": 260,
+    "height": 260,
+    "z_index": 1,
+    "shape_type": "ellipse",
+    "fill_color": "rgba(240,178,66,1)",
+    "opacity": 0.1
+   },
+   {
+    "id": "e4",
+    "type": "image",
+    "x": 9,
+    "y": 62,
+    "width": 240,
+    "height": 80,
+    "z_index": 5,
+    "asset_id": "solstice_logo_lockup.png",
+    "fit": "contain"
+   },
+   {
+    "id": "e5",
+    "type": "text",
+    "x": 80,
+    "y": 192,
+    "width": 600,
+    "height": 139,
+    "z_index": 5,
+    "content": "Golden Hour, Now in Every Bottle",
+    "font_family": "Solstice Serif",
+    "font_size": 58,
+    "font_weight": "bold",
+    "color": "rgba(255,255,255,1)",
+    "text_align": "left",
+    "style_runs": [
+     {
+      "start": 0,
+      "end": 11,
+      "color": "rgba(240,178,66,1)"
+     }
+    ]
+   },
+   {
+    "id": "e6",
+    "type": "text",
+    "x": 80,
+    "y": 349,
+    "width": 520,
+    "height": 62,
+    "z_index": 5,
+    "content": "Botanical sparkling infusions with wild honey and blood orange zest.",
+    "font_family": "Solstice Sans",
+    "font_size": 22,
+    "color": "rgba(255,255,255,0.85)",
+    "text_align": "left",
+    "line_height": 1.4
+   },
+   {
+    "id": "e7",
+    "type": "shape",
+    "x": 80,
+    "y": 451,
+    "width": 210,
+    "height": 64,
+    "z_index": 4,
+    "shape_type": "rectangle",
+    "fill_color": "rgba(232,106,58,1)",
+    "corner_radius": 32,
+    "group_id": "g1"
+   },
+   {
+    "id": "e8",
+    "type": "text",
+    "x": 80,
+    "y": 468,
+    "width": 210,
+    "height": 25,
+    "z_index": 5,
+    "content": "Shop Now",
+    "font_family": "Solstice Sans",
+    "font_size": 21,
+    "font_weight": "bold",
+    "color": "rgba(255,255,255,1)",
+    "text_align": "center",
+    "group_id": "g1"
+   },
+   {
+    "id": "e9",
+    "type": "shape",
+    "x": 310,
+    "y": 451,
+    "width": 210,
+    "height": 64,
+    "z_index": 4,
+    "shape_type": "rectangle",
+    "fill_color": "rgba(255,255,255,0)",
+    "corner_radius": 32,
+    "group_id": "g2",
+    "stroke_color": "rgba(255,255,255,0.9)",
+    "stroke_width": 2
+   },
+   {
+    "id": "e10",
+    "type": "text",
+    "x": 310,
+    "y": 468,
+    "width": 210,
+    "height": 25,
+    "z_index": 5,
+    "content": "Learn More",
+    "font_family": "Solstice Sans",
+    "font_size": 21,
+    "font_weight": "bold",
+    "color": "rgba(255,255,255,1)",
+    "text_align": "center",
+    "group_id": "g2"
+   },
+   {
+    "id": "e11",
+    "type": "image",
+    "x": 600,
+    "y": 10,
+    "width": 600,
+    "height": 600,
+    "z_index": 3,
+    "asset_id": "solstice_bottle.png",
+    "fit": "contain"
+   }
+  ]
+ },
+ "target_canvas": {
+  "width": 300,
+  "height": 600
+ }
+}

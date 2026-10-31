@@ -1,0 +1,187 @@
+{
+  "task_id": "facebook_post_2",
+  "difficulty": "synthetic",
+  "notes": "1080x1350 to Facebook Post",
+  "target_name": "Facebook Post",
+  "source": {
+    "canvas": {
+      "width": 1080,
+      "height": 1350
+    },
+    "elements": [
+      {
+        "id": "e1",
+        "type": "image",
+        "x": 0,
+        "y": 0,
+        "width": 1080,
+        "height": 1350,
+        "z_index": 0,
+        "asset_id": "solstice_bg_gradient.png",
+        "fit": "cover"
+      },
+      {
+        "id": "e2",
+        "type": "shape",
+        "x": 565.4629038487365,
+        "y": 725.497252097744,
+        "width": 339.65689088393555,
+        "height": 339.65689088393555,
+        "z_index": 1,
+        "shape_type": "ellipse",
+        "fill_color": "rgba(255,255,255,1)",
+        "opacity": 0.17
+      },
+      {
+        "id": "e3",
+        "type": "image",
+        "x": 388.79999999999995,
+        "y": 64.8,
+        "width": 302.40000000000003,
+        "height": 94.5,
+        "z_index": 4,
+        "asset_id": "solstice_logo_lockup.png",
+        "fit": "contain"
+      },
+      {
+        "id": "e4",
+        "type": "image",
+        "x": 349.54621179522155,
+        "y": 198.18,
+        "width": 380.90757640955684,
+        "height": 380.90757640955684,
+        "z_index": 3,
+        "asset_id": "solstice_bottle.png",
+        "fit": "contain"
+      },
+      {
+        "id": "e5",
+        "type": "text",
+        "x": 86.4,
+        "y": 605.0075764095568,
+        "width": 907.1999999999999,
+        "height": 73.2,
+        "z_index": 5,
+        "content": "Golden Hour, Bottled",
+        "font_family": "Solstice Serif",
+        "font_size": 61,
+        "font_weight": "bold",
+        "color": "rgba(255,255,255,1)",
+        "text_align": "center",
+        "style_runs": [
+          {
+            "start": 13,
+            "end": 20,
+            "color": "rgba(240,178,66,1)"
+          }
+        ]
+      },
+      {
+        "id": "e6",
+        "type": "text",
+        "x": 86.4,
+        "y": 704.1275764095568,
+        "width": 907.1999999999999,
+        "height": 26.4,
+        "z_index": 5,
+        "content": "Made with real fruit and nothing artificial.",
+        "font_family": "Solstice Sans",
+        "font_size": 22,
+        "font_weight": "regular",
+        "color": "rgba(255,255,255,0.88)",
+        "text_align": "center"
+      },
+      {
+        "id": "e8",
+        "type": "shape",
+        "x": 86.4,
+        "y": 762.9275764095568,
+        "width": 431.99999999999994,
+        "height": 48.6,
+        "z_index": 3,
+        "shape_type": "rectangle",
+        "fill_color": "rgba(232,106,58,1)",
+        "corner_radius": 24.3,
+        "group_id": "e7"
+      },
+      {
+        "id": "e9",
+        "type": "text",
+        "x": 86.4,
+        "y": 778.2275764095567,
+        "width": 431.99999999999994,
+        "height": 18.0,
+        "z_index": 5,
+        "content": "AWARD WINNING 2026",
+        "font_family": "Solstice Sans",
+        "font_size": 15,
+        "font_weight": "bold",
+        "color": "rgba(255,255,255,1)",
+        "text_align": "center",
+        "group_id": "e7"
+      },
+      {
+        "id": "e11",
+        "type": "shape",
+        "x": 540.0,
+        "y": 762.9275764095568,
+        "width": 431.99999999999994,
+        "height": 48.6,
+        "z_index": 3,
+        "shape_type": "rectangle",
+        "fill_color": "rgba(232,106,58,1)",
+        "corner_radius": 24.3,
+        "group_id": "e10"
+      },
+      {
+        "id": "e12",
+        "type": "text",
+        "x": 540.0,
+        "y": 778.2275764095567,
+        "width": 431.99999999999994,
+        "height": 18.0,
+        "z_index": 5,
+        "content": "LIMITED EDITION",
+        "font_family": "Solstice Sans",
+        "font_size": 15,
+        "font_weight": "bold",
+        "color": "rgba(255,255,255,1)",
+        "text_align": "center",
+        "group_id": "e10"
+      },
+      {
+        "id": "e14",
+        "type": "shape",
+        "x": 334.79999999999995,
+        "y": 843.9275764095568,
+        "width": 410.4,
+        "height": 86.4,
+        "z_index": 3,
+        "shape_type": "rectangle",
+        "fill_color": "rgba(232,106,58,1)",
+        "corner_radius": 43.2,
+        "group_id": "e13"
+      },
+      {
+        "id": "e15",
+        "type": "text",
+        "x": 334.79999999999995,
+        "y": 873.9275764095568,
+        "width": 410.4,
+        "height": 26.4,
+        "z_index": 5,
+        "content": "Shop Now",
+        "font_family": "Solstice Sans",
+        "font_size": 22,
+        "font_weight": "bold",
+        "color": "rgba(255,255,255,1)",
+        "text_align": "center",
+        "group_id": "e13"
+      }
+    ]
+  },
+  "target_canvas": {
+    "width": 1200,
+    "height": 630
+  }
+}
