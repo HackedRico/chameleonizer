@@ -1,0 +1,94 @@
+{
+  "engine": "engine-v1.28",
+  "formats": [
+    {
+      "key": "1080x1350",
+      "name": "Instagram Portrait",
+      "width": 1080,
+      "height": 1350
+    },
+    {
+      "key": "1080x1920",
+      "name": "Instagram Story",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "key": "1280x720",
+      "name": "YouTube Thumbnail",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "key": "1600x400",
+      "name": "Wide Banner",
+      "width": 1600,
+      "height": 400
+    },
+    {
+      "key": "728x90",
+      "name": "Leaderboard",
+      "width": 728,
+      "height": 90
+    },
+    {
+      "key": "300x250",
+      "name": "Medium Rectangle",
+      "width": 300,
+      "height": 250
+    }
+  ],
+  "samples": [
+    {
+      "id": "level1_warmup",
+      "label": "Level 1: Warm-up",
+      "width": 1080,
+      "height": 1080,
+      "elements": 4,
+      "target": "1080x1350",
+      "source": "level1_warmup_source.png",
+      "renders": {
+        "1080x1350": "level1_warmup_1080x1350.png",
+        "1080x1920": "level1_warmup_1080x1920.png",
+        "1280x720": "level1_warmup_1280x720.png",
+        "1600x400": "level1_warmup_1600x400.png",
+        "728x90": "level1_warmup_728x90.png",
+        "300x250": "level1_warmup_300x250.png"
+      }
+    },
+    {
+      "id": "level2_core",
+      "label": "Level 2: Core",
+      "width": 1080,
+      "height": 1080,
+      "elements": 11,
+      "target": "1600x400",
+      "source": "level2_core_source.png",
+      "renders": {
+        "1080x1350": "level2_core_1080x1350.png",
+        "1080x1920": "level2_core_1080x1920.png",
+        "1280x720": "level2_core_1280x720.png",
+        "1600x400": "level2_core_1600x400.png",
+        "728x90": "level2_core_728x90.png",
+        "300x250": "level2_core_300x250.png"
+      }
+    },
+    {
+      "id": "level3_advanced",
+      "label": "Level 3: Advanced",
+      "width": 1080,
+      "height": 1350,
+      "elements": 17,
+      "target": "728x90",
+      "source": "level3_advanced_source.png",
+      "renders": {
+        "1080x1350": "level3_advanced_1080x1350.png",
+        "1080x1920": "level3_advanced_1080x1920.png",
+        "1280x720": "level3_advanced_1280x720.png",
+        "1600x400": "level3_advanced_1600x400.png",
+        "728x90": "level3_advanced_728x90.png",
+        "300x250": "level3_advanced_300x250.png"
+      }
+    }
+  ]
+}

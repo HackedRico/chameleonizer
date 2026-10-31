@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Chameleonizer Viewer</title>
+        <link rel="stylesheet" href="styles.css">
+        <script type="module" src="index.js"></script>
+    </head>
+    <body>
+        <main>
+            <header>
+                <h1>Resize previews</h1>
+                <p class="note">How the Chameleonizer engine re-lays out the three official samples for other formats.</p>
+            </header>
+
+            <div class="field">
+                <label for="sample">Sample</label>
+                <select id="sample" disabled></select>
+            </div>
+            <div class="field">
+                <label for="format">Format</label>
+                <select id="format" disabled></select>
+            </div>
+
+            <div class="compare" id="compare" hidden>
+                <figure>
+                    <img id="source-image" alt="">
+                    <figcaption id="source-caption"></figcaption>
+                </figure>
+                <figure>
+                    <img id="output-image" alt="">
+                    <figcaption id="output-caption"></figcaption>
+                </figure>
+            </div>
+
+            <footer>
+                <button id="add-to-page" type="button" disabled>Add to page</button>
+                <p id="status" role="status"></p>
+                <p id="provenance" class="note"></p>
+            </footer>
+        </main>
+    </body>
+</html>

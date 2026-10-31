@@ -1,0 +1,21 @@
+{
+    "testId": "chameleonizer-viewer",
+    "name": "Chameleonizer Viewer",
+    "version": "0.1.0",
+    "manifestVersion": 2,
+    "requirements": {
+        "apps": [
+            {
+                "name": "Express",
+                "apiVersion": 1
+            }
+        ]
+    },
+    "entryPoints": [
+        {
+            "type": "panel",
+            "id": "viewer",
+            "main": "index.html"
+        }
+    ]
+}

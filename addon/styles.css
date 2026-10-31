@@ -1,0 +1,149 @@
+/* =============================================================================
+   Module Overview
+   =============================================================================
+   Styles for the viewer panel, sized for the 320px column Express gives add-ons,
+   with the 24px body padding and 16px gaps Adobe's add-on UX guidelines ask for.
+   Colours follow `color-scheme`: the system setting in a plain browser, and the
+   Express theme once `index.js` copies it into `data-theme`. */
+
+:root {
+    color-scheme: light dark;
+    --background: light-dark(#ffffff, #1e1e1e);
+    --surface: light-dark(#f4f4f4, #2c2c2c);
+    --border: light-dark(#d1d1d1, #4a4a4a);
+    --text: light-dark(#222222, #f0f0f0);
+    --muted: light-dark(#656565, #b3b3b3);
+    /* Express's indigo accent, as in Adobe's plain JavaScript template; white text on it is 5.2:1. */
+    --accent: #5258e4;
+    --accent-hover: #4046ca;
+    --on-accent: #ffffff;
+    --disabled: light-dark(#e1e1e1, #3a3a3a);
+    --on-disabled: light-dark(#8f8f8f, #8a8a8a);
+}
+
+:root[data-theme="light"] {
+    color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+}
+
+/* Author `display` rules would otherwise override the browser's `[hidden]` rule. */
+[hidden] {
+    display: none !important;
+}
+
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    /* Express injects adobe-clean into add-ons; the rest cover a plain browser. */
+    font: 14px/1.4 "adobe-clean", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 560px;
+    padding: 24px;
+}
+
+h1 {
+    margin: 0 0 4px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+p {
+    margin: 0;
+}
+
+.note,
+label,
+figcaption {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+select {
+    height: 32px;
+    padding: 0 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--background);
+    color: var(--text);
+    font: inherit;
+}
+
+.compare {
+    display: grid;
+    gap: 16px;
+    align-items: start;
+}
+
+.compare[data-layout="side-by-side"] {
+    grid-template-columns: 1fr 1fr;
+}
+
+/* A square source at full width would dwarf a banner placed under it. */
+.compare[data-layout="stacked"] figure:first-child {
+    width: 50%;
+}
+
+figure {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    margin: 0;
+}
+
+figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--surface);
+}
+
+footer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+button {
+    height: 32px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 16px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+    background: var(--accent-hover);
+}
+
+button:disabled {
+    background: var(--disabled);
+    color: var(--on-disabled);
+    cursor: default;
+}
+
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
